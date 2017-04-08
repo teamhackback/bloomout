@@ -14,9 +14,9 @@ def hello_world():
 @app.route('/api/chat', methods=['POST'])
 def chat():
     req = request.get_json()
-    if "text" not in req:
+    if "body" not in req:
         abort(400, "No text provided.")
-    resp = nltk(req["text"])
+    resp = nltk(req["body"])
     return jsonify(resp)
 
 if __name__ == '__main__':
