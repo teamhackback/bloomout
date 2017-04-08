@@ -1,7 +1,8 @@
 # Swiss Re Hackathon Bratislava 2017
 
 Theme: "My Personal Risk Advisor"
-Team: @wilzbach, @Dalimil, @jaitd, Sabi, Oleg
+
+Team: [@wilzbach](https://github.com/wilzbach), [@Dalimil](https://github.com/Dalimil), [@jaitd](https://github.com/jaitd), Sabi, Oleg
 
 ## Screenshots
 
