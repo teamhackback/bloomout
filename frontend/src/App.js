@@ -7,6 +7,7 @@ import {
 import Main from './views/Main.js'
 import EmailForm from './views/EmailForm.js'
 import DebugView from './views/DebugView.js'
+import NetworkView from './views/NetworkView.js'
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
             <Route path="/employee-risks" component={Main.Employee} />
             <Route path="/people" component={Main.People} />
             <Route path="/profile" component={Main.Profile} />
+            <Route path="/network" component={NetworkView} />
             <Route path="/form" component={EmailForm} />
             <Route path="/debug" component={DebugView} />
           </div>

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "d3": "^4.7.4",
+    "d3-tip": "^0.7.1",
+    "lodash": "^4.17.4",
     "progressbar.js": "^1.0.1",
     "react": "^15.5.2",
     "react-dom": "^15.5.2",
