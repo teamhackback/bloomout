@@ -6,6 +6,12 @@ import os
 from os import environ
 app = Flask(__name__)
 from watson import nltk, tone, personality
+from pymongo import MongoClient
+
+mongo_client = MongoClient()
+leap = mongo_client['leap']
+employees = leap['employees']
+messages = leap['messages']
 
 @app.route('/')
 def hello_world():
@@ -17,6 +23,12 @@ def chat():
     if "body" not in req:
         abort(400, "No text provided.")
     resp = nltk(req["body"])
+    messages.insert_one({
+        "emotion": resp,
+        "from": req["from"],
+        "to": req["to"],
+        "body": req["body"]
+    })
     return jsonify(resp)
 
 if __name__ == '__main__':
