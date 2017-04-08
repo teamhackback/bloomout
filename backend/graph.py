@@ -16,16 +16,12 @@ def dump_employee(employee_id):
     return employee
 
 
-def find_id(employee_name):
-    return employees.find_one({"name": employee_name})["id"]
-
-
 def build_graph():
     people = set()
     msgs = messages.find()
     for msg in msgs:
-        people.add(find_id(msg["to"]))
-        people.add(find_id(msg["to"]))
+        people.add(msg["to"])
+        people.add(msg["from"])
 
     #for person in people:
     #    employees.update_one({
@@ -50,11 +46,11 @@ def build_graph():
 
     msgs = messages.find()
     for msg in msgs:
-        g[find_id(msg['from'])][find_id(msg['to'])]["nr_msgs"] += 1
-        g[find_id(msg['from'])][find_id(msg['to'])]["sentiment"] += \
+        g[msg['from']][msg['to']]["nr_msgs"] += 1
+        g[msg['from']][msg['to']]["sentiment"] += \
             msg["emotion"]["sentiment"]["document"]["score"]
         for emotion in emotions:
-            g[find_id(msg['from'])][find_id(msg['to'])]["emotion"][emotion] +=\
+            g[msg['from']][msg['to']]["emotion"][emotion] +=\
                 msg["emotion"]["emotion"]["document"]["emotion"][emotion]
 
     g = {k: dict(v) for k, v in g.items()}

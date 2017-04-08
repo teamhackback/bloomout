@@ -7,11 +7,15 @@ import pymongo
 from bson.json_util import dumps
 from mongo_base import employees, messages, projects
 from graph import build_graph
-from flask import abort, Flask, jsonify, request
+from flask import abort, Flask, jsonify, request,\
+    send_from_directory
 from watson import nltk, tone, personality
 from werkzeug import Response
 
+UPLOAD_FOLDER = './images/'
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/')
@@ -22,6 +26,12 @@ def hello_world():
 @app.route('/api/history', methods=['GET'])
 def history():
     return dumps(messages.find().sort('date', pymongo.DESCENDING))
+
+
+@app.route('/api/images/<employeeid>')
+def images(employeeid):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               employeeid + '.jpg')
 
 
 @app.route('/api/chat', methods=['POST'])

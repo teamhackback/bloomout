@@ -4,6 +4,8 @@ import requests
 import random
 import shutil
 import numpy as np
+from os import listdir
+from os.path import isfile, join
 from mongo_base import employees, projects
 
 # seed rng
@@ -12,17 +14,34 @@ np.random.seed(4242)
 
 TOTAL_NUM_EMPLOYEES = 20
 TOTAL_NUM_PROJECTS = 6
+TOTAL_NUM_MESSAGES = 10
 DEPARTMENTS = ['hr', 'sales', 'marketing', 'it', 'accounting',
                'support', 'research']
 IMAGE_PATH = './images/'
-BODIES = ['You are awesome!', 'I was not happy with the results.',
-          'Tis but a scratch', 'This hovercraft is full of eels',
-          'I fart in your general direction',
-          'What is the air-speed velocity of an unladen swallow?']
+TEXT_DUMP_PATH = '../analytics/text_dump'
+FILES = [f for f in listdir(TEXT_DUMP_PATH)
+         if isfile(join(TEXT_DUMP_PATH, f))]
+
+
+def generate_message(random_text_file_index):
+    from_employee = random.randint(0, TOTAL_NUM_EMPLOYEES - 1)
+    to_employee = random.randint(0, TOTAL_NUM_EMPLOYEES - 1)
+    while(from_employee == to_employee):
+        to_employee = random.randint(0, TOTAL_NUM_EMPLOYEES - 1)
+
+    with open(join(TEXT_DUMP_PATH, FILES[random_text_file_index]), 'r') as f:
+        text = f.read()
+
+    return {
+        'from': from_employee,
+        'to': to_employee,
+        'body': text
+    }
 
 
 def generate_random_project_list():
-    return random.sample(range(TOTAL_NUM_PROJECTS), random.randint(1, TOTAL_NUM_PROJECTS))
+    return random.sample(range(TOTAL_NUM_PROJECTS),
+                         random.randint(1, TOTAL_NUM_PROJECTS))
 
 
 def generate_normal_value():
@@ -47,7 +66,8 @@ def insert_employees():
             contents = file.read()
             all_employees = json.loads(contents)
             for employee in all_employees:
-                employees.insert_one(employee)
+                print(employee)
+                # employees.insert_one(employee)
     else:
         print('Generating new employees')
 
@@ -94,25 +114,17 @@ def insert_projects():
 
 def insert_messages():
     print('Generating messages')
-    all_employees = employees.find()
-    for i in range(10):
-        from_employee = random.randint(0, TOTAL_NUM_EMPLOYEES - 1)
-        to_employee = random.randint(0, TOTAL_NUM_EMPLOYEES - 1)
-        while(from_employee == to_employee):
-            to_employee = random.randint(0, TOTAL_NUM_EMPLOYEES - 1)
-
+    random_text_file_index = random.sample(range(25000), TOTAL_NUM_MESSAGES)
+    for i in range(TOTAL_NUM_MESSAGES):
         requests.post('http://localhost:6001/api/chat',
-                      json={
-                          'from': all_employees[from_employee]['name'],
-                          'to': all_employees[to_employee]['name'],
-                          'body': random.choice(BODIES)
-                      })
+                      json=generate_message(random_text_file_index[i]))
 
 
 def save_employees():
     all_employees = []
     for employee in employees.find():
-        all_employees = {k: v for k, v in employee.items() if k != '_id'}
+        employee = {k: v for k, v in employee.items() if k != '_id'}
+        all_employees.append(employee)
 
     with open('employee_dump', 'w') as f:
         f.write(json.dumps(all_employees))
