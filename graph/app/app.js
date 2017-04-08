@@ -3,242 +3,127 @@ import _ from 'lodash';
 
 import './style/style.less';
 
-const svg = d3.select('#app').append('svg')
-            .attr('width', 960)
-            .attr('height', 800);
+const width = 600,
+    height = 600;
 
-const margin = { top: 80, right: 80, bottom: 80, left: 80 };
-const centerMargin = 100;
+const svg = d3.select('body').append('svg')
+    .attr('width', width)
+    .attr('height', height);
 
-const width = +svg.attr('width') - margin.left - margin.right;
-const height = +svg.attr('height') - margin.top - margin.bottom;
+const defs = svg.append("defs");
+var chartLayer = svg.append("g").classed("chartLayer", true)
 
-const g = svg
-            .append('g')
-            .attr('transform', `translate(${margin.left},${margin.top})`);
+const app = document.getElementById("app");
+app.style.display = "none";
 
-const gLeft = g.append('g');
-const gRight = g.append('g');
+//const gradient1 = defs.append("linearGradient").attr("id", "gradient1");
+//gradient1.append("stop").attr("offset", "0%").attr("stop-color", "blue");
+//gradient1.append("stop").attr("offset", "100%").attr("stop-color", "green");
+//const color = d3.scaleOrdinal(d3.schemeCategory20);
 
-const x = d3.scaleBand()
-    .rangeRound([0, width])
-    .padding(0.1)
-    .align(0.1);
-
-const yDate = d3.scaleBand()
-    .rangeRound([0, height])
-    .paddingInner(0.05);
-
-const protDose = d3.scaleLinear()
-    .range(['#d6e879', '#008000']);
-
-const radDose = d3.scaleLinear()
-    .range(['#ffff00', '#ff0000']);
-
-const stack = d3.stack();
-const timeFormatStr = '%d/%m/%Y';
-const parseDate = d3.timeParse(timeFormatStr);
-const formatDate = d3.timeFormat(timeFormatStr);
-
-function type(d, i, columns) {
-  let max = 0;
-  for (let j = 2; j < columns.length; ++j) {
-    if (max < d[columns[j]]) max = d[columns[j]];
-  }
-  d.date = parseDate(d.date);
-  d.max = max;
-
-  d.radiation = {
-    equip: d.usedEquipment,
-    shield: d.ceilingShield,
-    glasses: d.leadGlasses,
-    cabin: d.radiationProtectionCabin
-  };
-
-  d.protection = {
-    equip: 1 - d.usedEquipment,
-    shield: 1 - d.ceilingShield,
-    glasses: 1 - d.leadGlasses,
-    cabin: 1 - d.radiationProtectionCabin
-  };
-
-  console.log('max', d.max);
-  return d;
-}
-
-d3.csv('testData.csv', type, (error, data) => {
+d3.json('https://leap.hackback.tech/api/graph', (error, data) => {
   if (error) throw error;
+  console.log(data);
 
-  data.reduce((acc, d) => {
-  });
+  var dataNodes = [
+      { r: 10, label: 'bar'},
+      { r:10, label: 'foo'},
+      { r:10, label: 'ee'}
+  ];
 
-  // data.sort((a, b) => b.total - a.total);
-  console.log('data', data);
+  var dataLinks = [
+    { source: 1, target: 0},
+    { source: 1, target: 2},
+    { source: 2, target: 0}
+  ];
 
-  x.domain(data.map(d => d.State));
-  yDate.domain(data.map(d => d.date));
+  //var force = d3.force()
+      //.charge(-400)
+      //.linkDistance(height/2)
+      //.size([width, height])
+      //.linkStrength(1.3)
+      //.friction(0.8)
+      //.gravity(0.9);
+ var simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(function(d) { return d.index }))
+            .force("collide",d3.forceCollide( function(d){return d.r + 8 }).iterations(16) )
+            .force("charge", d3.forceManyBody())
+            .force("center", d3.forceCenter(width / 2, width / 2))
+            .force("y", d3.forceY(0))
+            .force("x", d3.forceX(0))
 
-  const cols = ['usedEquipment', 'ceilingShield', 'leadGlasses', 'radiationProtectionCabin'];
+  //var link = svg.selectAll(".link")
+        //.data(dataLinks)
+      //.enter().append("line")
+        //.attr("class", "link")
+        //.style("stroke",function(d){
+            //var id = "S"+d.source.index +"T" + d.target.index;
+            //var gradient1 = defs.append("linearGradient").attr("id",  id);
+            //gradient1.append("stop").attr("offset", "0%").attr("stop-color", d.target.color);
+            //gradient1.append("stop").attr("offset", "100%").attr("stop-color", d.source.color);
+            //return "url(#" + id + ")";
+        //});
 
-  protDose.domain([0, d3.max(data, d => d.max)]);
-  radDose.domain([0, d3.max(data, d => d.max)]);
+  //var node = svg.selectAll(".node")
+      //.data(dataNodes)
+    //.enter().append("circle")
+      //.attr("class", function(d){ return "node " + d.color})
+      //.attr("r", width/20)
+      //.call(simulation.drag);
 
-  stack.keys(data.columns.slice(2));
+  var link = svg.append("g")
+            .attr("class", "links")
+            .selectAll("line")
+            .data(dataLinks)
+            .enter()
+            .append("line")
+            .attr("stroke", "black")
+
+   var node = svg.append("g")
+       .attr("class", "nodes")
+       .selectAll("circle")
+       .data(dataNodes)
+       .enter().append("circle")
+       .attr("r", function(d){  return d.r })
+       .call(d3.drag()
+           .on("start", dragstarted)
+           .on("drag", dragged)
+           .on("end", dragended));
 
 
-  (function() {
-  // right
-    const barWidth = d3.scaleLinear()
-      .rangeRound([0, width / 2 - (centerMargin / 2)])
-      .domain([0, d3.max(data, d => d.max)]).nice();
+   var ticked = function() {
+       link
+           .attr("x1", function(d) { return d.source.x; })
+           .attr("y1", function(d) { return d.source.y; })
+           .attr("x2", function(d) { return d.target.x; })
+           .attr("y2", function(d) { return d.target.y; });
 
-    const xProtRight = d3.scaleLinear()
-      .rangeRound([(width / 2) + (centerMargin / 2), width])
-      .domain([0, d3.max(data, d => d.max)]).nice();
+       node
+           .attr("cx", function(d) { return d.x; })
+           .attr("cy", function(d) { return d.y; });
+   }
 
-    const extractData = d => _.sortBy(Object.keys(d.protection)
-      .map(key => ({ key, value: d.protection[key], date: d.date })), 'value').reverse();
+   simulation
+       .nodes(dataNodes)
+       .on("tick", ticked);
 
-    g.append('g')
-            .attr('class', 'grid')
-            .attr('transform', `translate(0,${height})`)
-            .call(d3.axisTop(xProtRight)
-                .tickSize(height, 0, 0)
-                .tickFormat('')
-            );
+   simulation.force("link")
+       .links(dataLinks);
 
-    const protBar = gRight.selectAll('.protBar')
-      .data(data)
-      .enter().append('g')
-        .attr('class', 'protBar')
-      .selectAll('rect')
-      .data(extractData)
-      .enter()
-      .append('rect')
-        .attr('class', d => d.key)
-        .attr('y', d => yDate(d.date))
-        .attr('x', d => (width / 2) + (centerMargin / 2))
-        .attr('width', d => barWidth(d.value))
-        .attr('height', yDate.bandwidth())
-        .attr('fill', d => protDose(d.value))
-        .style('stroke', 'black');
+   function dragstarted(d) {
+       if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+       d.fx = d.x;
+       d.fy = d.y;
+   }
 
-    gRight.append('g')
-        .attr('class', 'axis axis--x')
-        // .attr('transform', `translate(0,${height})`)
-        .call(d3.axisTop(xProtRight));
+   function dragged(d) {
+       d.fx = d3.event.x;
+       d.fy = d3.event.y;
+   }
 
-    //
-  }());
-
-  (function() {
-    const xRadLeft = d3.scaleLinear()
-      .rangeRound([(width / 2) - (centerMargin / 2), 0])
-      .domain([0, d3.max(data, d => d.max)]).nice();
-
-    g.append('g')
-            .attr('class', 'grid')
-            .attr('transform', `translate(0,${height})`)
-            .call(d3.axisTop(xRadLeft)
-                .tickSize(height, 0, 0)
-                .tickFormat('')
-            );
-
-    const extractData = d => _.sortBy(Object.keys(d.radiation)
-      .map(key => ({ key, value: d.radiation[key], date: d.date })), 'value').reverse();
-
-    const radBar = gLeft.selectAll('.radBar')
-      .data(data)
-      .enter().append('g')
-        .attr('class', 'serie')
-      .selectAll('rect')
-      .data(extractData)
-      .enter()
-      .append('rect')
-        .attr('class', d => d.key)
-        .attr('x', d => xRadLeft(d.value))
-        .attr('y', d => yDate(d.date))
-        .attr('width', d => xRadLeft(0) - xRadLeft(d.value))
-        .attr('height', yDate.bandwidth())
-        .attr('fill', d => radDose(d.value))
-        .style('stroke', 'black');
-
-    console.log('radBarleft', radBar.data());
-
-    gLeft.append('g')
-        .attr('class', 'axis axis--x')
-        // .attr('transform', `translate(0,${height})`)
-        .call(d3.axisTop(xRadLeft));
-
-    // gLeft.append('g')
-    //     .attr('class', 'axis axis--x')
-    //     .attr('transform', `translate(0,${height})`)
-    //     .call(d3.axisBottom(yDate));
-
-    //
-    // g.append('g')
-    //     .attr('class', 'axis axis--y')
-    //     .call(d3.axisLeft(xRadLeft).ticks(10, 's'))
-    //   .append('text')
-    //     .attr('x', 2)
-    //     .attr('y', xRadLeft(xRadLeft.ticks(10).pop()))
-    //     .attr('dy', '0.35em')
-    //     .attr('text-anchor', 'start')
-    //     .attr('fill', '#000')
-    //     .text('Population');
-  }());
-
-  const yAxis = g.append('g')
-      .attr('class', 'axis axis--y')
-      .call(d3.axisLeft(yDate)
-        .tickFormat(formatDate)
-        .tickSize(0)
-      )
-      .attr('transform', `translate(${width / 2},0)`);
-
-  yAxis.selectAll('g text')
-      .attr('font-size', 15)
-      .attr('text-anchor', 'middle');
-
-    // yAxis.select("path.domain")
-      // .attr('dx', function() {
-      //   var w = this.getBBox().width;
-      //   console.log("w", w);
-      //   return -w/4;
-      //
-      // })
-  yAxis.append('text')
-      // .attr('x', 2)
-      // .attr('y', yDate)
-      .attr('dy', '-10')
-      // .attr('dx', '10')
-      .attr('text-anchor', 'middle')
-      .attr('fill', '#000')
-      .attr('font-size', 15)
-      .attr('font-weight', 'bold')
-      .text('Time');
-
-  const legend = g.append('g')
-    .attr('transform', `translate(0,${height})`)
-    .selectAll('.legend')
-    .data(data.columns.slice(2).reverse())
-    .enter()
-      .append('g')
-      .attr('class', 'legend')
-      .attr('transform', (d, i) => `translate(0,${i * 20})`)
-      .style('font', '10px sans-serif');
-  //
-  legend.append('rect')
-      .attr('x', width - 18)
-      .attr('width', 18)
-      .attr('height', 18)
-      .attr('fill', protDose);
-
-  legend.append('text')
-      .attr('x', width - 24)
-      .attr('y', 9)
-      .attr('dy', '.35em')
-      .attr('text-anchor', 'end')
-      .text(d => d);
+   function dragended(d) {
+       if (!d3.event.active) simulation.alphaTarget(0);
+       d.fx = null;
+       d.fy = null;
+   }
 });
-
