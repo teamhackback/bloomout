@@ -21,8 +21,8 @@ import _ from 'lodash';
 
 import './style/style.less';
 
-const width = 600,
-    height = 600;
+const width = 800,
+    height = 800;
 
 const svg = select('body').append('svg')
     .attr('width', width)
@@ -45,7 +45,7 @@ const emotionColors = {
   "disgust": "blue",
   "fear": "orange",
   "joy": "pink",
-  "sadness": "black"
+  "sadness": "green"
 }
 
 function strokeEdge(d) {
@@ -61,13 +61,14 @@ function strokeEdge(d) {
 
   var id = "S" + source.id  +"T" + target.id;
   var gradient1 = defs.append("linearGradient").attr("id",  id)
-   .attr("offset", "0%")
-   .attr("offset", "100%")
+  gradient1.append("stop").attr("offset", "0%").attr("stop-color", d.sourceColor);
+   //.attr("offset", "0%")
+   //.attr("offset", "100%")
    //.attr("x1", "0%")
    //.attr("x2", "100%")
    //.attr("y1", "0%")
    //.attr("y2", "100%");
-  gradient1.append("stop").attr("offset", "100%").attr("stop-color", source.color);
+  gradient1.append("stop").attr("offset", "100%").attr("stop-color", d.targetColor);
   return "url(#" + id + ")";
 }
 
@@ -117,7 +118,7 @@ const ticked = function() {
 
 function drawInitial(){
   simulation = forceSimulation()
-            .force("link", forceLink().id(function(d) { return d.index }).distance(150))
+            .force("link", forceLink().id(function(d) { return d.index }).distance(350))
             //.force("link", forceLink(dataLinks).distance(200))
             .force("collide",forceCollide( function(d){return d.r + 8 }).iterations(16) )
             .force("charge", forceManyBody())
@@ -139,6 +140,15 @@ function drawInitial(){
 
    simulation.force("link").links(dataLinks);
 };
+
+function getColorByEmotion(obj) {
+  if (typeof obj === "undefined") {
+    return "black";
+  } else {
+    console.log(_.maxBy(Object.keys(obj.emotion), (k) => obj.emotion[k]));
+    return emotionColors[_.maxBy(Object.keys(obj.emotion), (k) => obj.emotion[k])];
+  }
+}
 
 function updateGraph(){
 
@@ -284,7 +294,14 @@ json('https://leap.hackback.tech/api/graph', (error, data) => {
   data.links = []
   _.each(data.graph, (connections, personId)  => {
     _.each(connections, (connection, connectionId) => {
-      data.links.push({source: dataNodesById[personId].id, target: dataNodesById[connectionId].id});
+      const sourceColor = getColorByEmotion(connection);
+      const targetColor = getColorByEmotion((data.graph[connectionId] || {} )[personId]);
+      data.links.push({
+        source: dataNodesById[personId].id,
+        target: dataNodesById[connectionId].id,
+        sourceColor: sourceColor,
+        targetColor: sourceColor,
+      });
     });
   });
   dataLinks = data.links;
