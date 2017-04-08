@@ -49,9 +49,10 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border: 1px solid #2E373E;
 }
 .tiles .tile:hover {
-  background-color: #ad1457 !important;
+  background-color: #2E373E !important;
 }
 .tiles .tile .title {
   position: absolute;

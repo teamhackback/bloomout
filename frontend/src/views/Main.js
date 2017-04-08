@@ -23,7 +23,7 @@ const WelcomeLeftScreen = (props) => (
 
 const WelcomeOverviewBasic = () => (
   <div className="WelcomeOverviewBasic dark-theme">
-    <ProgressBar progress="63" infoText="Overall risk" colored />
+    <ProgressBar progress="63" infoText="Overall risk" />
   </div>
 );
 
@@ -32,23 +32,23 @@ const WelcomeOverviewDetailed = () => (
     <Tiles tiles={[
       {
         name: 'Employee risks',
-        renderContent: () => <ProgressBar progress="42" />
+        renderContent: () => <ProgressBar progress="42" colored reverseColor />
       },
       {
         name: 'Project risks',
-        renderContent: () => <ProgressBar progress="87" />
+        renderContent: () => <ProgressBar progress="14" colored reverseColor />
       },
       {
         name: 'Client risks',
-        renderContent: () => <ProgressBar progress="15" />
+        renderContent: () => <ProgressBar progress="20" colored reverseColor />
       },
       {
-        name: 'Quality of interactions',
-        renderContent: () => <ProgressBar progress="28" />
+        name: 'Interaction quality',
+        renderContent: () => <ProgressBar progress="62" colored />
       },
       {
-        name: 'Recommendations',
-        renderContent: () => <div className="tile-main-text">5 new</div>
+        name: 'Company mood',
+        renderContent: () => <ProgressBar progress="28" colored />
       },
       {
         name: 'Black box score',
