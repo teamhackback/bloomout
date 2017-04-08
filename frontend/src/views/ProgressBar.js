@@ -43,7 +43,7 @@ class ProgressBar extends Component {
       step: function(state, circle) {
         //circle.path.setAttribute('stroke', state.color);
         const value = Math.round(circle.value() * 100);
-        circle.setText("<h1>"+ infoText + value + "%</h1>");
+        if (!self.props.noText) circle.setText("<h1>"+ infoText + value + "%</h1>");
         circle.path.setAttribute('stroke', self.getStrokeColor(value));
       }
     });

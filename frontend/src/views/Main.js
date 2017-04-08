@@ -156,7 +156,11 @@ class Employee extends Component {
 }
 
 const renderPeopleListItem = (ind) => (
-  <img src={Images.people[ind]} role="presentation" className="PeopleListViewItem" />
+  <div className="person-combo">
+    <ProgressBar progress="56" noText />
+    <ProgressBar progress="16" noText />
+    <img src={Images.people[ind]} role="presentation" className="PeopleListViewItem" />
+  </div>
 );
 
 const PeopleOverviewBasic = () => (
@@ -241,7 +245,14 @@ class People extends Component {
 
 const ProfileOverviewBasic = () => (
   <div className="ProfileOverviewBasic dark-theme animated fadeIn">
-    <div className="tile-main-text">Content here</div>
+    <div>Picture here</div>
+    <div className="profile-stats-row" style={{
+        width: "100%", display: "flex", justifyContent: "center"
+      }}>
+      <div><div className="tile-main-text">19%</div><div>Happiness</div></div>
+      <div><div className="tile-main-text">49%</div><div>Turnover risk</div> </div>
+      <div><div className="tile-main-text">36%</div><div>Risk of burnout</div> </div>
+    </div>
   </div>
 );
 const ProfileOverviewDetailed = () => (
@@ -276,11 +287,11 @@ const ProfileOverviewDetailed = () => (
         renderContent: () => <ProgressBar progress="8" colored reverseColor />
       },
       {
-        name: 'Project participation',
+        name: 'Participation',
         renderContent: () => <div className="tile-main-text colspan-2">158/160</div>
       },
       {
-        name: 'Tasks assigned',
+        name: 'Active tasks',
         renderContent: () => <div className="tile-main-text">3</div>
       }
     ].map((t, ind) => {
