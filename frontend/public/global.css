@@ -143,6 +143,9 @@ a {
 .EmployeeOverviewDetailed .tile-main-text, .ProfileOverviewDetailed .tile-main-text {
   font-size: 1.6em;
 }
+.ProfileOverviewBasic .person-combo {
+  transform: translateY(3%);
+}
 .white-theme {
   background: #fff;
 }
@@ -158,9 +161,6 @@ a {
   border: 1px solid rgba(0,0,0,0.2);
   border-radius: 50%;
 }
-.PeopleListView .tiles .tile {
-  justify-content: center;
-}
 
 .back-navbar {
   position: absolute;
@@ -169,7 +169,7 @@ a {
   width: 50%;
   padding: 1em;
   color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.5); */
 }
 .back-navbar a {
   color: #fff;
@@ -185,13 +185,24 @@ a {
   position: relative;
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-5%);
 }
 .person-combo .progressBar {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
+  transform: translate(-50%, -50%) rotate(180deg);
+  width: 55%;
+}
+.person-combo .progressBar:nth-child(2) {
+  width: 61%;
+}
+.person-combo .progressBar:nth-child(3) {
+  width: 67%;
 }
 
 /* button style http://bootsnipp.com/snippets/QABqr */

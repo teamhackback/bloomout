@@ -20,8 +20,8 @@ const WelcomeLeftScreen = (props) => (
   <h1>Welcome, <span className="c-p">hackBack</span></h1>
   <strong>This is your risk management application</strong>
   <p>
-    Discover what risks you have in your management and employee relations.
-    Pop-up your official trust fund polaroid, put a bird on it, and find lorem ipsum semantics easily.
+    Receive automated feedback on your employee's work satisfaction and their engagement.
+    Analyze a combination of employee statistics to prevent burnout before it happens.
   </p>
   <Button onClick={props.showOverview}>Show me more</Button>
 </div>
@@ -155,10 +155,13 @@ class Employee extends Component {
   }
 }
 
-const renderPeopleListItem = (ind) => (
+const rands=[15,63,23,30,16,42,21,51,8,35,73,46,24,48,41,      19,42,32,       25,27,5,56,47,15,43,43,10,62,39,35,21,30,28,14,18,30,27,10,34,52,26,28,9,39,54,37,10,10,15,31,32,37,20,51,16,39,62,44,9,56,53,48,9,60,26,5,33,35,38,9,56,13,34,22,45,23];
+
+const renderPeopleListItem = (ind, va, vb, vc) => (
   <div className="person-combo">
-    <ProgressBar progress="56" noText />
-    <ProgressBar progress="16" noText />
+    <ProgressBar progress={va || rands[ind*3]} noText colored />
+    <ProgressBar progress={vb || rands[ind*3 + 1]} noText colored reverseColor />
+    <ProgressBar progress={vc || rands[ind*3 + 2]} noText colored reverseColor />
     <img src={Images.people[ind]} role="presentation" className="PeopleListViewItem" />
   </div>
 );
@@ -245,13 +248,13 @@ class People extends Component {
 
 const ProfileOverviewBasic = () => (
   <div className="ProfileOverviewBasic dark-theme animated fadeIn">
-    <div>Picture here</div>
+    {renderPeopleListItem(5, 19, 49, 32) }
     <div className="profile-stats-row" style={{
-        width: "100%", display: "flex", justifyContent: "center"
+        width: "100%", display: "flex", justifyContent: "center", marginBottom: "1em"
       }}>
       <div><div className="tile-main-text">19%</div><div>Happiness</div></div>
       <div><div className="tile-main-text">49%</div><div>Turnover risk</div> </div>
-      <div><div className="tile-main-text">36%</div><div>Risk of burnout</div> </div>
+      <div><div className="tile-main-text">32%</div><div>Risk of burnout</div> </div>
     </div>
   </div>
 );
