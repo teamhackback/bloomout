@@ -4,6 +4,9 @@
 import pymongo
 from bson.json_util import dumps
 from mongo_base import employees, messages
+from collections import defaultdict
+
+emotions = ["anger", "joy", "fear", "disgust", "sadness"]
 
 def build_graph():
     people = set()
@@ -20,7 +23,27 @@ def build_graph():
                 "name": person
             }
         }, upsert=True)
-    print(people)
+
+    g = defaultdict(lambda: defaultdict(lambda: {
+        "nr_msgs": 0,
+        "emotion": {
+            "anger": 0.0,
+            "joy": 0.0,
+            "fear": 0.0,
+            "disgust": 0.0,
+            "sadness": 0.0,
+        },
+        "sentiment": 0.0,
+    }))
+
+    msgs = messages.find()
+    for msg in msgs:
+        g[msg["from"]][msg["to"]]["nr_msgs"] += 1
+        g[msg["from"]][msg["to"]]["sentiment"] += msg["emotion"]["sentiment"]["document"]["score"]
+        for emotion in emotions:
+            g[msg["from"]][msg["to"]]["emotion"][emotion] += msg["emotion"]["emotion"]["document"]["emotion"][emotion]
+
+    return {k: dict(v) for k, v in g.items()}
 
 if __name__ == '__main__':
-    build_graph()
+    print(build_graph())

@@ -10,6 +10,7 @@ import datetime
 import pymongo
 from bson.json_util import dumps
 from mongo_base import employees, messages
+from graph import build_graph
 
 @app.route('/')
 def hello_world():
@@ -33,6 +34,10 @@ def chat():
         'created_at': datetime.datetime.now()
     })
     return jsonify(resp)
+
+@app.route('/api/graph', methods=['GET'])
+def graph():
+    return jsonify(build_graph())
 
 if __name__ == '__main__':
     port = environ.get("PORT", "6001")
