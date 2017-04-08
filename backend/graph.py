@@ -43,7 +43,11 @@ def build_graph():
         for emotion in emotions:
             g[msg["from"]][msg["to"]]["emotion"][emotion] += msg["emotion"]["emotion"]["document"]["emotion"][emotion]
 
-    return {k: dict(v) for k, v in g.items()}
+    g = {k: dict(v) for k, v in g.items()}
+    return {
+        "graph": g,
+        "nodes": list(people)
+    }
 
 if __name__ == '__main__':
     print(build_graph())
