@@ -16,6 +16,11 @@ messages.drop()
 try:
     counter = 0
     while True:
+        if counter == 20:
+            print('dropping previous messages')
+            counter = 0
+            messages.drop()
+
         message = saved_messages[counter % len(saved_messages)]
         if '_id' in message:
             del message['_id']
