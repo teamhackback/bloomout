@@ -31,6 +31,37 @@ a {
   color: royalblue;
 }
 
+/* Tiles */
+.tiles {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.tiles .tile {
+  width: 50%;
+  height: 33.33%;
+  position: relative;
+  cursor: pointer;
+}
+.tiles .tile:hover {
+  background-color: #ddd !important;
+}
+.tiles .tile .title {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: 10px;
+  color: #fff;
+}
+
+
+
+.dark-theme {
+  background: #343434;
+  color: #fff;
+}
 .WelcomeLeftScreen {
   display: flex;
   flex-direction: column;
@@ -44,10 +75,6 @@ a {
   
 }
 
-.dark-theme {
-  background: #222;
-  color: #fff;
-}
 
 /* button style http://bootsnipp.com/snippets/QABqr */
 a.button {
