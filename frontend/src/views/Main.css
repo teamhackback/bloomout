@@ -1,0 +1,18 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #e2e1e0;
+}
+
+.SplitLayout {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+}
+
+.SplitPane {
+  padding: 1em;
+}
