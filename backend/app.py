@@ -1,21 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import Flask
+from flask import abort, Flask, jsonify, request
 import os
 from os import environ
 app = Flask(__name__)
+from watson import nltk, tone, personality
 
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
 
-@app.route('/chat', methods=['POST'])
+@app.route('/api/chat', methods=['POST'])
 def chat():
-    req_input = request.get_json()
-    #"to", from, body
-    print(req_input)
+    req = request.get_json()
+    if "text" not in req:
+        abort(400, "No text provided.")
+    resp = nltk(req["text"])
+    return jsonify(resp)
 
 if __name__ == '__main__':
     port = environ.get("PORT", "6001")
-    app.run(port=int(port))
+    app.run(debug=True, port=int(port), use_reloader=True)
