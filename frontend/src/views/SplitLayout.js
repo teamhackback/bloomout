@@ -12,6 +12,7 @@ class SplitLayout extends Component {
         <div className={Styles.SplitPane}>
           {this.props.right}
         </div>
+        {this.props.children}
       </div>
     );
   }

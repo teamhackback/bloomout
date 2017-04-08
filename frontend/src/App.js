@@ -17,6 +17,7 @@ class App extends Component {
             <Route exact path="/" component={Main.Intro} />
             <Route path="/employee-risks" component={Main.Employee} />
             <Route path="/people" component={Main.People} />
+            <Route path="/profile" component={Main.Profile} />
             <Route path="/form" component={EmailForm} />
             <Route path="/debug" component={DebugView} />
           </div>

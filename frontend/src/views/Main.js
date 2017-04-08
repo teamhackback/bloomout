@@ -8,6 +8,12 @@ const Button = (props) => (
   <a className="button" href="#" {...props}>{props.children}<span></span></a>
 );
 
+const BackNavBar = (props) => (
+  <div className="back-navbar">
+    <a href="#" onClick={() => window.history.back() }>&larr; Back</a>
+  </div>
+);
+
 const WelcomeLeftScreen = (props) => (
 <div className="WelcomeLeftScreen animated fadeIn">
   <img src={Images.logo} role="presentation" />
@@ -98,7 +104,7 @@ const EmployeeOverviewDetailed = () => (
     <Tiles link="/people" tiles={[
       {
         name: 'Interactions',
-        renderContent: () => <ProgressBar progress="42" colored reverseColor />,
+        renderContent: () => <ProgressBar progress="42" colored />,
       },
       {
         name: 'Happiness',
@@ -142,10 +148,16 @@ class Employee extends Component {
       <SplitLayout
         left={<EmployeeOverviewBasic />}
         right={<EmployeeOverviewDetailed />}
-      />
+      >
+      <BackNavBar />
+      </SplitLayout>
     );
   }
 }
+
+const renderPeopleListItem = (ind) => (
+  <img src={Images.people[ind]} role="presentation" className="PeopleListViewItem" />
+);
 
 const PeopleOverviewBasic = () => (
   <div className="PeopleOverviewBasic dark-theme animated fadeIn">
@@ -153,45 +165,63 @@ const PeopleOverviewBasic = () => (
   </div>
 );
 const PeopleListView = () => (
-  <div className="PeopleListView animated fadeIn">
-    <Tiles tiles={[
+  <div className="PeopleListView animated fadeIn white-theme">
+    <Tiles whiteTheme link="/profile" tiles={[
       {
-        name: "Michael Barla",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Michael Barla"
       },
       {
-        name: "Rudy Jones",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Rudy Jones"
       },
       {
-        name: "John Mnemonic",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "John Moore"
       },
       {
-        name: "Rainbow Dash",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Summer Dash"
       },
       {
-        name: "Sergiy Proper",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Sergiy Proper"
       },
       {
-        name: "Elizabeth Smith",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Eli Smith"
       },
       {
-        name: "Max Magnussen",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Max Magnu"
       },
       {
-        name: "Zombi Zamba",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Zombi Zamba"
       },
       {
-        name: "Robert Dresden",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Rob Dresden"
+      },
+      {
+        name: "Michael Barla"
+      },
+      {
+        name: "Rudy Jones"
+      },
+      {
+        name: "John Moore"
+      },
+      {
+        name: "Summer Dash"
+      },
+      {
+        name: "Sergiy Proper"
+      },
+      {
+        name: "Eli Smith"
+      },
+      {
+        name: "Max Magnu"
+      },
+      {
+        name: "Zombi Zamba"
       }
-    ]} />
+    ].map((c, ind) => {
+      c.renderContent = () => renderPeopleListItem(ind < 10 ? ind : (ind+1)%9);
+      return c;
+    })} />
   </div>
 );
 
@@ -201,7 +231,73 @@ class People extends Component {
       <SplitLayout
         left={<PeopleOverviewBasic />}
         right={<PeopleListView />}
-      />
+      >
+      <BackNavBar />
+      </SplitLayout>
+    );
+  }
+}
+
+
+const ProfileOverviewBasic = () => (
+  <div className="ProfileOverviewBasic dark-theme animated fadeIn">
+    <div className="tile-main-text">Content here</div>
+  </div>
+);
+const ProfileOverviewDetailed = () => (
+  <div className="ProfileOverviewDetailed animated fadeIn">
+    <Tiles link="#" tiles={[
+      {
+        name: 'Interactions',
+        renderContent: () => <ProgressBar progress="42" colored />,
+      },
+      {
+        name: 'Engagement',
+        renderContent: () => <ProgressBar progress="56" colored />
+      },
+      {
+        name: 'Avg weekly',
+        renderContent: () => <div className="tile-main-text">40 h</div>
+      },
+      {
+        name: 'Disgust',
+        renderContent: () => <ProgressBar progress="20" colored reverseColor />
+      },
+      {
+        name: 'Fear',
+        renderContent: () => <ProgressBar progress="78" colored reverseColor />
+      },
+      {
+        name: 'Sadness',
+        renderContent: () => <ProgressBar progress="61" colored reverseColor />
+      },
+      {
+        name: 'Joy',
+        renderContent: () => <ProgressBar progress="8" colored reverseColor />
+      },
+      {
+        name: 'Project participation',
+        renderContent: () => <div className="tile-main-text colspan-2">158/160</div>
+      },
+      {
+        name: 'Tasks assigned',
+        renderContent: () => <div className="tile-main-text">3</div>
+      }
+    ].map((t, ind) => {
+      t.icon = Images.icons.artboards[ind%6];
+      return t;
+    })} />
+  </div>
+);
+class Profile extends Component {
+  render() {
+    return (
+      <SplitLayout
+        left={<ProfileOverviewBasic />}
+        right={<ProfileOverviewDetailed />}
+      >
+      <BackNavBar />
+      </SplitLayout>
     );
   }
 }
@@ -209,7 +305,8 @@ class People extends Component {
 const Main = {
   Intro,
   Employee,
-  People
+  People,
+  Profile
 }
 
 export default Main;
