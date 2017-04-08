@@ -155,7 +155,7 @@ class Employee extends Component {
   }
 }
 
-const rands=[15,63,23,30,16,42,21,51,8,35,73,46,24,48,41,      19,42,32,       25,27,5,56,47,15,43,43,10,62,39,35,21,30,28,14,18,30,27,10,34,52,26,28,9,39,54,37,10,10,15,31,32,37,20,51,16,39,62,44,9,56,53,48,9,60,26,5,33,35,38,9,56,13,34,22,45,23];
+const rands=[15,63,23,30,16,42,21,51,8,35,73,46,24,48,41,      32,42,19,       25,27,5,56,47,15,43,43,10,62,39,35,21,30,28,14,18,30,27,10,34,52,26,28,9,39,54,37,10,10,15,31,32,37,20,51,16,39,62,44,9,56,53,48,9,60,26,5,33,35,38,9,56,13,34,22,45,23];
 
 const renderPeopleListItem = (ind, va, vb, vc) => (
   <div className="person-combo">
@@ -248,7 +248,7 @@ class People extends Component {
 
 const ProfileOverviewBasic = () => (
   <div className="ProfileOverviewBasic dark-theme animated fadeIn">
-    {renderPeopleListItem(5, 19, 49, 32) }
+    {renderPeopleListItem(5, 32, 49, 19) }
     <div className="profile-stats-row" style={{
         width: "100%", display: "flex", justifyContent: "center", marginBottom: "1em"
       }}>
