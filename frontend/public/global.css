@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
 @import url('https://fonts.googleapis.com/css?family=Hind');
 
 html {
@@ -75,7 +75,6 @@ a {
 
 .progressBar {
   font-weight: bold;
-  font-size: 1.7em;
   position: relative;
   width: 100%;
 }
@@ -88,6 +87,8 @@ a {
   background: #343434;
   color: #fff;
 }
+
+/* WELCOME Overview */
 .WelcomeLeftScreen {
   display: flex;
   flex-direction: column;
@@ -97,7 +98,7 @@ a {
 .WelcomeLeftScreen h1 {
   font-weight: bold;
 }
-.WelcomeOverviewBasic {
+.WelcomeOverviewBasic, .EmployeeOverviewBasic, .PeopleOverviewBasic {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -105,12 +106,38 @@ a {
   background: url(./pane-background/Blue.jpg) no-repeat left center;
   background-size: cover;
 }
-.WelcomeOverviewBasic .progressBar {
+.EmployeeOverviewBasic {
+  background-image: url(./pane-background/employee.jpg);
+}
+.PeopleOverviewBasic {
+  background-image: url(./pane-background/person.jpg);
+}
+
+.WelcomeOverviewBasic .progressBar, .EmployeeOverviewBasic .progressBar {
   width: 65%;
 }
 .WelcomeOverviewDetailed .progressBar {
   width: 40%;
   font-size: 1em;
+}
+.EmployeeOverviewDetailed .progressBar {
+  width: 50%;
+  font-size: 1em;
+}
+.EmployeeOverviewDetailed .tile, .PeopleListView .tile {
+  width: 33.33%;
+}
+.EmployeeOverviewDetailed .tile.colspan-2 {
+  width: 66.66%;
+}
+.EmployeeOverviewBasic h1 {
+  font-size: 1.6em;
+}
+.EmployeeOverviewDetailed h1 {
+  font-size: 1.4em;
+}
+.EmployeeOverviewDetailed .tile-main-text {
+  font-size: 1.6em;
 }
 
 

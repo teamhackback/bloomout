@@ -11,7 +11,9 @@ class Tiles extends Component {
     return (
       <div className="tiles dark-theme">
         {this.props.tiles.map((tile, ind) => (
-          <div key={ind} className={`tile animated fadeIn`}
+          <div key={ind}
+            className={`tile animated fadeIn ${tile.tileClass || ""}`}
+            onClick={() => window.location = this.props.link}
             style={{
               background: '#333F49',
               animationDelay: `${100*ind}ms`
