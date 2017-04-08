@@ -155,10 +155,11 @@ class Employee extends Component {
   }
 }
 
-const renderPeopleListItem = (ind) => (
+const renderPeopleListItem = (ind, va, vb, vc) => (
   <div className="person-combo">
-    <ProgressBar progress="56" noText />
-    <ProgressBar progress="16" noText />
+    <ProgressBar progress={vc || 5 + Math.floor(Math.random() * 80)} noText colored />
+    <ProgressBar progress={vb || 5 + Math.floor(Math.random() * 50)} noText colored reverseColor />
+    <ProgressBar progress={va || 5 + Math.floor(Math.random() * 30)} noText colored reverseColor />
     <img src={Images.people[ind]} role="presentation" className="PeopleListViewItem" />
   </div>
 );
@@ -245,13 +246,13 @@ class People extends Component {
 
 const ProfileOverviewBasic = () => (
   <div className="ProfileOverviewBasic dark-theme animated fadeIn">
-    <div>Picture here</div>
+    {renderPeopleListItem(5, 19, 49, 32) }
     <div className="profile-stats-row" style={{
-        width: "100%", display: "flex", justifyContent: "center"
+        width: "100%", display: "flex", justifyContent: "center", marginBottom: "1em"
       }}>
       <div><div className="tile-main-text">19%</div><div>Happiness</div></div>
       <div><div className="tile-main-text">49%</div><div>Turnover risk</div> </div>
-      <div><div className="tile-main-text">36%</div><div>Risk of burnout</div> </div>
+      <div><div className="tile-main-text">32%</div><div>Risk of burnout</div> </div>
     </div>
   </div>
 );

@@ -49,7 +49,7 @@ class ProgressBar extends Component {
     });
     this.bar.path.style.strokeLinecap = "round";
     const progress = this.props.progress;
-    this.bar.animate(progress > 1 ? progress / 100 : progress);  // Number from 0.0 to 1.0
+    this.bar.animate(progress / 100);  // Number from 0.0 to 1.0
   }
 
   render() {
