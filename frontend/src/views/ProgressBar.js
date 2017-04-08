@@ -11,16 +11,16 @@ class ProgressBar extends Component {
     const infoText = this.props.infoText ? (this.props.infoText + "<br />") : "";
     this.bar = new PBar.Circle(`#${this.id}`, {
       color: '#fff',
-      strokeWidth: 6,
-      trailWidth: 4,
-      trailColor: '#7D7D7D',
+      strokeWidth: 7,
+      trailWidth: 5,
+      trailColor: this.props.colored ?'#7D7D7D' : '#ddd',
       easing: 'easeInOut',
       duration: 1400,
       text: {
         autoStyleContainer: false
       },
-      from: { color: '#5CB85C' },
-      to: { color: '#D9534F' },
+      from: { color: this.props.colored ? '#5CB85C' : '#1976d2' },
+      to: { color: this.props.colored ? '#D9534F' : '#1976d2' },
       // Set default step function for all animate calls
       step: function(state, circle) {
         circle.path.setAttribute('stroke', state.color);

@@ -1,23 +1,8 @@
 import React, { Component } from 'react';
 import Tiles from './Tiles';
 import ProgressBar from './ProgressBar';
-import Styles from './Main.css';
 import logo from '../icon.svg';
-
-class SplitLayout extends Component {
-  render() {
-    return (
-      <div className={Styles.SplitLayout}>
-        <div className={Styles.SplitPane}>
-          {this.props.left}
-        </div>
-        <div className={Styles.SplitPane}>
-          {this.props.right}
-        </div>
-      </div>
-    );
-  }
-}
+import SplitLayout from './SplitLayout';
 
 const Button = (props) => (
   <a className="button" href="#" {...props}>{props.children}<span></span></a>
@@ -36,41 +21,43 @@ const WelcomeLeftScreen = (props) => (
 </div>
 );
 
+const WelcomeOverviewBasic = () => (
+  <div className="WelcomeOverviewBasic dark-theme">
+    <ProgressBar progress="63" infoText="Overall risk" colored />
+  </div>
+);
+
 const WelcomeOverviewDetailed = () => (
   <div className="WelcomeOverviewDetailed animated fadeIn">
     <Tiles tiles={[
       {
         name: 'Employee risks',
-        renderContent: () => <div>hi</div>
+        renderContent: () => <ProgressBar progress="42" />
       },
       {
         name: 'Project risks',
-        renderContent: () => <div>hi</div>
+        renderContent: () => <ProgressBar progress="87" />
       },
       {
         name: 'Client risks',
-        renderContent: () => <div>hi</div>
+        renderContent: () => <ProgressBar progress="15" />
       },
       {
         name: 'Quality of interactions',
-        renderContent: () => <div>hi</div>
+        renderContent: () => <ProgressBar progress="28" />
       },
       {
         name: 'Recommendations',
-        renderContent: () => <div>hi</div>
+        renderContent: () => <div className="tile-main-text">5 new</div>
       },
       {
         name: 'Black box score',
-        renderContent: () => <div>hi</div>
+        renderContent: () => <div className="tile-main-text">12p.</div>
       }
     ]} />
   </div>
 );
-const WelcomeOverviewBasic = () => (
-  <div className="WelcomeOverviewBasic dark-theme">
-    <ProgressBar progress="80" infoText="Overall risk" />
-  </div>
-);
+
 
 class Intro extends Component {
   constructor(props) {

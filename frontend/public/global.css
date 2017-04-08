@@ -45,9 +45,13 @@ a {
   position: relative;
   cursor: pointer;
   padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .tiles .tile:hover {
-  background-color: #ddd !important;
+  background-color: #ad1457 !important;
 }
 .tiles .tile .title {
   position: absolute;
@@ -57,7 +61,16 @@ a {
   color: #fff;
 }
 
-
+.progressBar {
+  font-weight: bold;
+  font-size: 1.5em;
+  position: relative;
+  width: 100%;
+}
+.tile-main-text {
+  font-weight: bold;
+  font-size: 1.5em;
+}
 
 .dark-theme {
   background: #343434;
@@ -80,12 +93,12 @@ a {
 }
 .WelcomeOverviewBasic .progressBar {
   width: 50%;
-  position: relative;
 }
-.progressBar {
-  font-weight: bold;
-  font-size: 1.5em;
+.WelcomeOverviewDetailed .progressBar {
+  width: 40%;
+  font-size: 1em;
 }
+
 
 
 /* button style http://bootsnipp.com/snippets/QABqr */
