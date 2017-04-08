@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Hind');
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Hind', sans-serif;
+  font-size: 16px;
+  min-height: 100vh;
+  background: #FFF;
+}
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.c-p {
+  color: royalblue;
+}
+
+.WelcomeLeftScreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4em 6em;
+}
+.WelcomeLeftScreen h1 {
+  font-weight: bold;
+}
+.WelcomeOverviewBasic {
+  
+}
+
+.dark-theme {
+  background: #222;
+  color: #fff;
+}
+
+/* button style http://bootsnipp.com/snippets/QABqr */
+a.button {
+  -webkit-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+  -moz-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+  -ms-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+  -o-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+  transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+  display: block;
+  margin: 1em auto;
+  text-decoration: none;
+  border-radius: 1px;
+  padding: 1em 3em;
+  font-weight: bold;
+  font-style: italic;
+  color: rgba(10, 10, 10, 0.7);
+  box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
+}
+
+a.button:hover {
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow: rgba(30, 22, 54, 0.7) 0 0px 0px 40px inset;
+}
