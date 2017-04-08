@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import './App.css';
+import {SERVER_URL} from '../config';
 
-const socket = require('socket.io-client')('https://leap.hackback.tech');
+const socket = require('socket.io-client')(SERVER_URL);
 
-class App extends Component {
+import DebugHistoryItem from './DebugHistoryItem';
+
+export default class DebugView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: []
     }
-    fetch('https://leap.hackback.tech/api/history')
+    fetch(SERVER_URL + "/api/history")
     .then(function(response) {
       return response.json();
     })
@@ -30,15 +32,11 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
+    <div className="debugview">
         { this.state.items.map(item =>
-          <div key={item._id.$oid} >
-            {item.emotion.sentiment.document.score}
-          </div>
+          <DebugHistoryItem key={item._id.$oid} item={item} />
         )}
-      </div>
+    </div>
     );
   }
 }
-
-export default App;
