@@ -13,6 +13,8 @@ import {
   drag,
   json,
   scaleOrdinal,
+  scaleLog,
+  scaleLinear,
   schemeCategory20,
   randomUniform,
   interpolate,
@@ -42,10 +44,10 @@ var tickStyle = "direct";
 
 const emotionColors = {
   "anger": "red",
-  "disgust": "blue",
-  "fear": "orange",
-  "joy": "pink",
-  "sadness": "green"
+  "disgust": "red",
+  "fear": "red",
+  "joy": "green",
+  "sadness": "red"
 }
 
 function strokeEdge(d) {
@@ -143,9 +145,8 @@ function drawInitial(){
 
 function getColorByEmotion(obj) {
   if (typeof obj === "undefined") {
-    return "black";
+    return "grey";
   } else {
-    console.log(_.maxBy(Object.keys(obj.emotion), (k) => obj.emotion[k]));
     return emotionColors[_.maxBy(Object.keys(obj.emotion), (k) => obj.emotion[k])];
   }
 }
@@ -178,21 +179,24 @@ function updateGraph(){
         console.log("d", d);
     })
 
-  const nodeEnter = node
+  const circle = node
     .append("circle")
-    .attr("fill", function(d) { return color(d.id); })
+    .attr("stroke", "white")
     .call(function(node) {
         node.transition()
         .duration(transitionDuration)
         .ease(transitionType)
-        .attr("r", 10); })
+        .attr("r", 27); })
 
   const images = node.append("svg:image")
         .attr("xlink:href",  function(d) { return d.img;})
         .attr("x", function(d) { return -25;})
         .attr("y", function(d) { return -25;})
         .attr("height", 50)
-        .attr("width", 50);
+        //.attr("clip-path", "url(#avatar_clip)")
+        .attr("width", 50)
+        .attr("stroke-width", 2)
+        .attr("stroke", "black");
 
   images.on( 'click', function (d) {
           console.log("d", d);
@@ -218,8 +222,8 @@ function updateGraph(){
 
   node.append("text")
       .attr("class", "nodetext")
-      .attr("x", 20)
-      .attr("y", 25+15)
+      .attr("x", -60)
+      .attr("y", 65)
       .attr("fill", "black")
       .text(function(d) { return d.label; });
 
@@ -253,7 +257,7 @@ function updateGraph(){
     .enter()
     .append("line")
     .attr("stroke-width",function(d){
-      return 10;
+      return d.width;
     })
     .attr("stroke", strokeEdge)
     .call(function(link) { link
@@ -275,20 +279,27 @@ function nodesMap(e, i) {
   e.r = e.r || 10;
   e.label = e.name;
   e.color = color(e.id);
-  e.img = "https://leap.hackback.tech/api/images/" + e.internal_id;
+  e.img = "https://leap.hackback.tech/api/avatar/" + e.internal_id;
   return e;
 }
 
-json('https://leap.hackback.tech/api/graph', (error, data) => {
+json('./temp.json', (error, data) => {
+//json('https://leap.hackback.tech/api/graph', (error, data) => {
   if (error) throw error;
 
   drawInitial();
 
   dataNodes = data.nodes.map(nodesMap);
   _.each(dataNodes, (e) => {
-    //dataNodesById[e.id] = e;
     dataNodesById[e.internal_id] = e;
   })
+  const maxMsgs = _.reduce(_.values(data.graph), (acc, e) => {
+    const f = _.reduce(_.values(e), (acc, e) => {
+      return Math.max(e.nr_msgs, acc);
+    }, 0);
+    return Math.max(acc, f);
+  }, 0);
+  const scaleMsgs = scaleLinear().domain([1, maxMsgs], [5, 30]);
   console.log(data.nodes);
   console.log(dataNodesById);
   data.links = []
@@ -296,11 +307,14 @@ json('https://leap.hackback.tech/api/graph', (error, data) => {
     _.each(connections, (connection, connectionId) => {
       const sourceColor = getColorByEmotion(connection);
       const targetColor = getColorByEmotion((data.graph[connectionId] || {} )[personId]);
+      const scaledWidth = scaleMsgs(connection.nr_msgs);
+      console.log(connection.nr_msgs, scaledWidth);
       data.links.push({
         source: dataNodesById[personId].id,
         target: dataNodesById[connectionId].id,
         sourceColor: sourceColor,
-        targetColor: sourceColor,
+        targetColor: targetColor,
+        width: scaledWidth
       });
     });
   });
