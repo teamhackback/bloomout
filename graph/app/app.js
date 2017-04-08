@@ -20,6 +20,7 @@ import {
   interpolate,
 } from 'd3';
 import _ from 'lodash';
+const d3tip = require("d3-tip");
 
 import './style/style.less';
 
@@ -34,6 +35,18 @@ const defs = svg.append("defs");
 const gradiants = defs.append("g").attr("id", "gradiant_group");
 const app = document.getElementById("app");
 app.style.display = "none";
+
+const filter = defs.append("filter")
+  .attr("id", "solid")
+  .attr("x", 0)
+  .attr("y", 0)
+  .attr("width", 1)
+  .attr("height", 1);
+filter.append("feFlood").attr("flood-color", "yellow")
+filter
+  .append("feComposite")
+  .attr("in", "SourceGraphic")
+  .attr("operator", "xor")
 
 const color = scaleOrdinal(schemeCategory20);
 
@@ -51,6 +64,16 @@ const emotionColors = {
   "joy": "green",
   "sadness": "red"
 }
+
+var tip = d3tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, -5])
+  .html(function(d) {
+    return `<span class="nodetext">${d.label}<span>`;
+  })
+
+svg.call(tip);
+
 
 function strokeEdge(d) {
   let source, target
@@ -202,25 +225,44 @@ function updateGraph(){
     .on("click", function(d) {
         console.log("d", d);
     })
-    .on( 'mouseenter', function() {
+    .on( 'mouseenter', function(d) {
+      var self = this;
+      var target = event.target;
       select( this.childNodes[0] )
         .transition()
           .attr("cx", function(d) { return -10;})
           .attr("cy", function(d) { return -10;})
         .attr("r", function(d) { return 55;})
+
+         select( this.childNodes[1] )
+          .transition()
+          .attr("x", function(d) { return -60;})
+          .attr("y", function(d) { return -60;})
+          .attr("height", 100)
+          .attr("width", 100)
+        .on("end", function(){
+          tip.show.call(self, d, self)
+        });
     })
     // set back
-    .on( 'mouseleave', function() {
+    .on( 'mouseleave', function(d) {
       select( this.childNodes[0] )
         .transition()
         .attr("r", function(d) { return 27;})
           .attr("cx", function(d) { return 0;})
           .attr("cy", function(d) { return 0;})
+         select( this.childNodes[1] )
+           .transition()
+           .attr("x", function(d) { return -25;})
+           .attr("y", function(d) { return -25;})
+           .attr("height", 50)
+           .attr("width", 50)
+          .on("end", function(){tip.hide(d)});
     });
 
   const circle = node
     .append("circle")
-    .attr("stroke", "white")
+    .attr("fill", "white")
     .call(function(node) {
         node.transition()
         .duration(transitionDuration)
@@ -236,36 +278,15 @@ function updateGraph(){
         //.attr("clip-path", "url(#avatar_clip)")
         .attr("width", 50)
         .attr("stroke-width", 2)
-        .attr("stroke", "black");
+        .attr("stroke", "white");
 
-  images.on( 'click', function (d) {
-          console.log("d", d);
-           })
-          .on( 'mouseenter', function() {
-            // select element in current context
-            select( this )
-              .transition()
-              .attr("x", function(d) { return -60;})
-              .attr("y", function(d) { return -60;})
-              .attr("height", 100)
-              .attr("width", 100);
-          })
-          // set back
-          .on( 'mouseleave', function() {
-            select( this )
-              .transition()
-              .attr("x", function(d) { return -25;})
-              .attr("y", function(d) { return -25;})
-              .attr("height", 50)
-              .attr("width", 50);
-          });
-
-  node.append("text")
-      .attr("class", "nodetext")
-      .attr("x", -60)
-      .attr("y", 65)
-      .attr("fill", "black")
-      .text(function(d) { return d.label; });
+  //node.append("text")
+      //.attr("class", "nodetext")
+      //.attr("x", -60)
+      //.attr("y", 65)
+      //.attr("fill", "black")
+      //.attr("filter", "url(#solid)")
+      //.text(function(d) { return d.label; });
 
   node = node.merge(node);
 
