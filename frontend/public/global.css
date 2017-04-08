@@ -121,7 +121,7 @@ a {
   font-size: 1em;
 }
 .EmployeeOverviewDetailed .progressBar {
-  width: 50%;
+  width: 58%;
   font-size: 1em;
 }
 .EmployeeOverviewDetailed .tile, .PeopleListView .tile {
@@ -134,12 +134,27 @@ a {
   font-size: 1.6em;
 }
 .EmployeeOverviewDetailed h1 {
-  font-size: 1.4em;
+  font-size: 1.6em;
 }
 .EmployeeOverviewDetailed .tile-main-text {
   font-size: 1.6em;
 }
-
+.PeopleListView .dark-theme {
+  background: #fff;
+  color: #222;
+}
+.back-navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  padding: 1em;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+.back-navbar a {
+  color: #fff;
+}
 
 
 /* button style http://bootsnipp.com/snippets/QABqr */
