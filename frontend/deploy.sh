@@ -1,6 +1,7 @@
 #!/bin/bash
 
 host=${HOST:-wehstyle.hackback.tech}
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-npm run build
-rsync -avr build/ root@${host}:/leap/frontend
+(cd $DIR && npm run build)
+rsync -avr $DIR/build/ root@${host}:/leap/frontend
