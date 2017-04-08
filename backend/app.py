@@ -7,6 +7,9 @@ from os import environ
 app = Flask(__name__)
 from watson import nltk, tone, personality
 from pymongo import MongoClient
+import datetime
+import pymongo
+from bson.json_util import dumps
 
 mongo_client = MongoClient()
 leap = mongo_client['leap']
@@ -16,6 +19,10 @@ messages = leap['messages']
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
+
+@app.route('/api/history', methods=['GET'])
+def history():
+    return dumps(messages.find().sort('date', pymongo.DESCENDING))
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -27,7 +34,8 @@ def chat():
         "emotion": resp,
         "from": req["from"],
         "to": req["to"],
-        "body": req["body"]
+        "body": req["body"],
+        'created_at': datetime.datetime.now()
     })
     return jsonify(resp)
 
