@@ -178,6 +178,21 @@ function updateGraph(){
     .on("click", function(d) {
         console.log("d", d);
     })
+    .on( 'mouseenter', function() {
+      select( this.childNodes[0] )
+        .transition()
+          .attr("cx", function(d) { return -10;})
+          .attr("cy", function(d) { return -10;})
+        .attr("r", function(d) { return 55;})
+    })
+    // set back
+    .on( 'mouseleave', function() {
+      select( this.childNodes[0] )
+        .transition()
+        .attr("r", function(d) { return 27;})
+          .attr("cx", function(d) { return 0;})
+          .attr("cy", function(d) { return 0;})
+    });
 
   const circle = node
     .append("circle")
@@ -187,6 +202,7 @@ function updateGraph(){
         .duration(transitionDuration)
         .ease(transitionType)
         .attr("r", 27); })
+
 
   const images = node.append("svg:image")
         .attr("xlink:href",  function(d) { return d.img;})
@@ -283,8 +299,8 @@ function nodesMap(e, i) {
   return e;
 }
 
-json('./temp.json', (error, data) => {
-//json('https://leap.hackback.tech/api/graph', (error, data) => {
+//json('./temp.json', (error, data) => {
+json('https://leap.hackback.tech/api/graph', (error, data) => {
   if (error) throw error;
 
   drawInitial();
@@ -299,12 +315,14 @@ json('./temp.json', (error, data) => {
     }, 0);
     return Math.max(acc, f);
   }, 0);
-  const scaleMsgs = scaleLinear().domain([1, maxMsgs], [5, 30]);
+  const scaleMsgs = scaleLinear().domain([1, maxMsgs]).range([5, 20]);
   console.log(data.nodes);
   console.log(dataNodesById);
   data.links = []
   _.each(data.graph, (connections, personId)  => {
     _.each(connections, (connection, connectionId) => {
+      if (connection.nr_msgs < 2)
+        return;
       const sourceColor = getColorByEmotion(connection);
       const targetColor = getColorByEmotion((data.graph[connectionId] || {} )[personId]);
       const scaledWidth = scaleMsgs(connection.nr_msgs);
