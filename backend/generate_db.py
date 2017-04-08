@@ -1,4 +1,6 @@
-from mongo_base import employees, projects
+from mongo_base import employees, projects, messages
+import requests
+import random
 
 # anger, joy, fear, disgust, sadness
 all_employees = [
@@ -69,3 +71,21 @@ all_projects = [
 
 for project in all_projects:
     projects.insert_one(project)
+
+bodies = ['You are awesome!', 'I was not happy with the results.',
+          'Tis but a scratch', 'This hovercraft is full of eels',
+          'I fart in your general direction',
+          'What is the air-speed velocity of an unladen swallow?']
+
+for i in range(10):
+    from_employee = random.choice(all_employees)
+    to_employee = random.choice(all_employees)
+    while(from_employee == to_employee):
+        to_employee = random.choice(all_employees)
+
+    r = requests.post('http://localhost:6001/api/chat',
+                      json={
+                          'from': from_employee['name'],
+                          'to': to_employee['name'],
+                          'body': random.choice(bodies)
+                      })

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import Tiles from './Tiles';
+import ProgressBar from './ProgressBar';
 import Styles from './Main.css';
+import logo from '../icon.svg';
 
 class SplitLayout extends Component {
   render() {
@@ -21,26 +24,51 @@ const Button = (props) => (
 );
 
 const WelcomeLeftScreen = (props) => (
-<div className="WelcomeLeftScreen">
-  <div>logo</div>
+<div className="WelcomeLeftScreen animated fadeIn">
+  <img src={logo} role="presentation" />
   <h1>Welcome, <span className="c-p">hackBack</span></h1>
   <strong>This is your risk management application</strong>
   <p>
     Discover what risks you have in your management and employee relations.
-    Pop-up your official trust fund polaroid, put a bird on it stumptown enamel semantics actually.
+    Pop-up your official trust fund polaroid, put a bird on it, and find lorem ipsum semantics easily.
   </p>
   <Button onClick={props.showOverview}>Show me more</Button>
 </div>
 );
 
 const WelcomeOverviewDetailed = () => (
-  <div className="WelcomeOverviewDetailed">
-    detailed overview left
+  <div className="WelcomeOverviewDetailed animated fadeIn">
+    <Tiles tiles={[
+      {
+        name: 'Employee risks',
+        renderContent: () => <div>hi</div>
+      },
+      {
+        name: 'Project risks',
+        renderContent: () => <div>hi</div>
+      },
+      {
+        name: 'Client risks',
+        renderContent: () => <div>hi</div>
+      },
+      {
+        name: 'Quality of interactions',
+        renderContent: () => <div>hi</div>
+      },
+      {
+        name: 'Recommendations',
+        renderContent: () => <div>hi</div>
+      },
+      {
+        name: 'Black box score',
+        renderContent: () => <div>hi</div>
+      }
+    ]} />
   </div>
 );
 const WelcomeOverviewBasic = () => (
   <div className="WelcomeOverviewBasic dark-theme">
-    basic overview left
+    <ProgressBar progress="80" infoText="Overall risk" />
   </div>
 );
 
