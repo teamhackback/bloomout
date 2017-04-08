@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Tiles from './Tiles';
 import ProgressBar from './ProgressBar';
-import logo from '../icon.svg';
 import SplitLayout from './SplitLayout';
+import Images from '../assets';
 
 const Button = (props) => (
   <a className="button" href="#" {...props}>{props.children}<span></span></a>
@@ -10,7 +10,7 @@ const Button = (props) => (
 
 const WelcomeLeftScreen = (props) => (
 <div className="WelcomeLeftScreen animated fadeIn">
-  <img src={logo} role="presentation" />
+  <img src={Images.logo} role="presentation" />
   <h1>Welcome, <span className="c-p">hackBack</span></h1>
   <strong>This is your risk management application</strong>
   <p>
@@ -32,7 +32,7 @@ const WelcomeOverviewDetailed = () => (
     <Tiles tiles={[
       {
         name: 'Employee risks',
-        renderContent: () => <ProgressBar progress="42" colored reverseColor />
+        renderContent: () => <ProgressBar progress="42" colored reverseColor />,
       },
       {
         name: 'Project risks',
@@ -54,7 +54,10 @@ const WelcomeOverviewDetailed = () => (
         name: 'Black box score',
         renderContent: () => <div className="tile-main-text">12p.</div>
       }
-    ]} />
+    ].map((t, ind) => {
+      t.icon = Images.icons.artboards[ind];
+      return t;
+    })} />
   </div>
 );
 

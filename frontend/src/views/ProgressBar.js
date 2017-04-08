@@ -29,8 +29,8 @@ class ProgressBar extends Component {
     const self = this;
     this.bar = new PBar.Circle(`#${this.id}`, {
       color: '#fff',
-      strokeWidth: 8,
-      trailWidth: 8,
+      strokeWidth: 7,
+      trailWidth: 7,
       trailColor: this.props.colored ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.2)',
       easing: 'easeInOut',
       duration: 1400,
