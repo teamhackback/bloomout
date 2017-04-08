@@ -99,7 +99,7 @@ a {
 .WelcomeLeftScreen h1 {
   font-weight: bold;
 }
-.WelcomeOverviewBasic, .EmployeeOverviewBasic, .PeopleOverviewBasic {
+.WelcomeOverviewBasic, .EmployeeOverviewBasic, .PeopleOverviewBasic, .ProfileOverviewBasic {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -113,6 +113,9 @@ a {
 .PeopleOverviewBasic {
   background-image: url(./pane-background/person.jpg);
 }
+.ProfileOverviewBasic {
+  background-image: url(./pane-background/city.jpg);
+}
 
 .WelcomeOverviewBasic .progressBar, .EmployeeOverviewBasic .progressBar {
   width: 65%;
@@ -121,11 +124,11 @@ a {
   width: 40%;
   font-size: 1em;
 }
-.EmployeeOverviewDetailed .progressBar {
+.EmployeeOverviewDetailed .progressBar, .ProfileOverviewDetailed .progressBar {
   width: 58%;
   font-size: 1em;
 }
-.EmployeeOverviewDetailed .tile, .PeopleListView .tile {
+.EmployeeOverviewDetailed .tile, .PeopleListView .tile, .ProfileOverviewDetailed .tile {
   width: 33.33%;
 }
 .EmployeeOverviewDetailed .tile.colspan-2 {
@@ -134,10 +137,10 @@ a {
 .EmployeeOverviewBasic h1 {
   font-size: 1.6em;
 }
-.EmployeeOverviewDetailed h1 {
+.EmployeeOverviewDetailed h1, .ProfileOverviewDetailed h1 {
   font-size: 1.6em;
 }
-.EmployeeOverviewDetailed .tile-main-text {
+.EmployeeOverviewDetailed .tile-main-text, .ProfileOverviewDetailed .tile-main-text {
   font-size: 1.6em;
 }
 .white-theme {

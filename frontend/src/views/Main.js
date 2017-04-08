@@ -104,7 +104,7 @@ const EmployeeOverviewDetailed = () => (
     <Tiles link="/people" tiles={[
       {
         name: 'Interactions',
-        renderContent: () => <ProgressBar progress="42" colored reverseColor />,
+        renderContent: () => <ProgressBar progress="42" colored />,
       },
       {
         name: 'Happiness',
@@ -238,12 +238,63 @@ class People extends Component {
   }
 }
 
+
+const ProfileOverviewBasic = () => (
+  <div className="ProfileOverviewBasic dark-theme animated fadeIn">
+    <div className="tile-main-text">Content here</div>
+  </div>
+);
+const ProfileOverviewDetailed = () => (
+  <div className="ProfileOverviewDetailed animated fadeIn">
+    <Tiles link="#" tiles={[
+      {
+        name: 'Interactions',
+        renderContent: () => <ProgressBar progress="42" colored />,
+      },
+      {
+        name: 'Engagement',
+        renderContent: () => <ProgressBar progress="56" colored />
+      },
+      {
+        name: 'Avg weekly',
+        renderContent: () => <div className="tile-main-text">40 h</div>
+      },
+      {
+        name: 'Disgust',
+        renderContent: () => <ProgressBar progress="20" colored reverseColor />
+      },
+      {
+        name: 'Fear',
+        renderContent: () => <ProgressBar progress="78" colored reverseColor />
+      },
+      {
+        name: 'Sadness',
+        renderContent: () => <ProgressBar progress="61" colored reverseColor />
+      },
+      {
+        name: 'Joy',
+        renderContent: () => <ProgressBar progress="8" colored reverseColor />
+      },
+      {
+        name: 'Project participation',
+        renderContent: () => <div className="tile-main-text colspan-2">158/160</div>
+      },
+      {
+        name: 'Tasks assigned',
+        renderContent: () => <div className="tile-main-text">3</div>
+      }
+    ].map((t, ind) => {
+      t.icon = Images.icons.artboards[ind%6];
+      return t;
+    })} />
+  </div>
+);
 class Profile extends Component {
   render() {
     return (
       <SplitLayout
-        left={<PeopleOverviewBasic />}
-        right={<PeopleListView />}
+        left={<ProfileOverviewBasic />}
+        right={<ProfileOverviewDetailed />}
       >
       <BackNavBar />
       </SplitLayout>
