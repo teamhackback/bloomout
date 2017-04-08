@@ -34,6 +34,12 @@ def images(employeeid):
                                employeeid + '.jpg')
 
 
+@app.route('/api/avatar/<employeeid>')
+def avatars(employeeid):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               employeeid + '_avatar.png')
+
+
 @app.route('/api/chat', methods=['POST'])
 def chat():
     req = request.get_json()
@@ -107,6 +113,33 @@ def get_or_create_projects():
             dumps(all_projects),
             mimetype='application/json'
         )
+
+
+@app.route('/api/project/<message_id>', methods=['GET'])
+def get_message(message_id):
+    message = messages.find_one({'id': int(message_id)})
+    if message:
+        return Response(
+            dumps(message),
+            mimetype='application/json'
+        )
+    else:
+        abort(400, 'Project not found')
+
+
+@app.route('/api/messages', methods=['GET'])
+def get_or_create_messages():
+    if request.method == 'POST':
+        return ('', 204)
+    else:
+        all_messages = []
+        for message in messages.find():
+            all_messages.append(message)
+
+        return Response(
+            dumps(all_messages),
+            mimetype='application/json'
+            )
 
 
 if __name__ == '__main__':
