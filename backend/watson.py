@@ -3,8 +3,9 @@
 
 import requests
 import json
-from watson_developer_cloud import ToneAnalyzerV3, PersonalityInsightsV3, NaturalLanguageUnderstandingV1
-import watson_developer_cloud.natural_language_understanding.features.v1 as features
+from watson_developer_cloud import ToneAnalyzerV3, PersonalityInsightsV3
+from natural_language_understanding import NaturalLanguageUnderstandingV1
+import natural_language_understanding_features as features
 import os
 
 # https://www.ibm.com/watson/developercloud/tone-analyzer/api/v3/?python#post-tone
@@ -22,7 +23,11 @@ def tone(text):
 
 def nltk(text):
     # https://github.com/watson-developer-cloud/python-sdk/blob/master/watson_developer_cloud/natural_language_understanding/features/v1/__init__.py
-    return nltk_insights.analyze(features=[features.Entities(), features.Emotion(), features.Sentiment(), features.Keywords()],text=text, html=None,
+    local_features = [
+            features.Emotion(document=True),
+            features.Sentiment(document=True),
+            features.Keywords(emotion=True, sentiment=True)]
+    return nltk_insights.analyze(features=local_features,text=text, html=None,
                 clean=True, xpath=None, fallback_to_raw=True,
                 return_analyzed_text=False)
 
@@ -57,4 +62,4 @@ def init():
 init()
 #print(tone("Hi there. This is Sebastian."))
 #print(personality("This is Sebastian from HackBack."))
-print(nltk("this is my experimental text.  Bruce Banner is the Hulk and Bruce Wayne is BATMAN! Superman fears not Banner, but Wayne.'"))
+print(json.dumps(nltk("IBM is an American multinational technology company headquartered in Armonk, New York, United States, with operations in over 170 countries.")))
