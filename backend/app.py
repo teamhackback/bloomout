@@ -30,7 +30,7 @@ def hello_world():
 
 @app.route('/api/history', methods=['GET'])
 def history():
-    resp = messages.find().limit(20).sort('date', pymongo.DESCENDING)
+    resp = messages.find().sort('created_at', pymongo.DESCENDING).limit(20)
     return Response(
         dumps(list(resp)),
         mimetype='application/json'

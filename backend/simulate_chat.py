@@ -10,6 +10,7 @@ import eventlet
 from flask_socketio import SocketIO
 eventlet.monkey_patch()
 socketio = SocketIO(message_queue='redis://', async_mode='eventlet')
+import datetime
 
 
 saved_messages = None
@@ -25,7 +26,7 @@ messages.drop()
 try:
     counter = 0
     while True:
-        if counter == 20:
+        if counter == 5:
             print('dropping previous messages')
             counter = 0
             messages.drop()
@@ -35,6 +36,7 @@ try:
             del message['_id']
         message['id'] = counter
         messages.insert_one(message)
+        message['created_at'] = datetime.datetime.now()
         socketio.emit('new_chat', message)
         print('inserted message: ', counter)
 
