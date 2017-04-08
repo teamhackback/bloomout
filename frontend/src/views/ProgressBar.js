@@ -29,8 +29,8 @@ class ProgressBar extends Component {
     const self = this;
     this.bar = new PBar.Circle(`#${this.id}`, {
       color: '#fff',
-      strokeWidth: 8,
-      trailWidth: 8,
+      strokeWidth: 4,
+      trailWidth: 4,
       trailColor: this.props.colored ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.2)',
       easing: 'easeInOut',
       duration: 1400,
@@ -43,7 +43,7 @@ class ProgressBar extends Component {
       step: function(state, circle) {
         //circle.path.setAttribute('stroke', state.color);
         const value = Math.round(circle.value() * 100);
-        circle.setText(infoText + value + "%");
+        circle.setText("<h1>"+ infoText + value + "%</h1>");
         circle.path.setAttribute('stroke', self.getStrokeColor(value));
       }
     });
