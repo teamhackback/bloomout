@@ -29,7 +29,11 @@ def hello_world():
 
 @app.route('/api/history', methods=['GET'])
 def history():
-    return dumps(messages.find().sort('date', pymongo.DESCENDING))
+    resp = messages.find().limit(20).sort('date', pymongo.DESCENDING)
+    return Response(
+        dumps(list(resp)),
+        mimetype='application/json'
+    )
 
 
 @app.route('/api/images/<employeeid>')
