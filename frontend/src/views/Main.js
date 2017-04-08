@@ -16,21 +16,32 @@ class SplitLayout extends Component {
   }
 }
 
+const Button = (props) => (
+  <a className="button" href="#" {...props}>{props.children}<span></span></a>
+);
+
 const WelcomeLeftScreen = (props) => (
 <div className="WelcomeLeftScreen">
-  <h1>Welcome to your company</h1>
-  <p>Discover what risks you have in your management and employee relations.
+  <div>logo</div>
+  <h1>Welcome, <span className="c-p">hackBack</span></h1>
+  <strong>This is your risk management application</strong>
+  <p>
+    Discover what risks you have in your management and employee relations.
     Pop-up your official trust fund polaroid, put a bird on it stumptown enamel semantics actually.
   </p>
-  <button onClick={props.showOverview}>Show me more</button>
+  <Button onClick={props.showOverview}>Show me more</Button>
 </div>
 );
 
 const WelcomeOverviewDetailed = () => (
-  <div>detailed overview left</div>
+  <div className="WelcomeOverviewDetailed">
+    detailed overview left
+  </div>
 );
 const WelcomeOverviewBasic = () => (
-  <div>basic overview right</div>
+  <div className="WelcomeOverviewBasic dark-theme">
+    basic overview left
+  </div>
 );
 
 class Intro extends Component {
