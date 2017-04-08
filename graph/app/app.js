@@ -32,15 +32,21 @@ const defs = svg.append("defs");
 const app = document.getElementById("app");
 app.style.display = "none";
 
-const gradient1 = defs.append("linearGradient").attr("id", "gradient1");
-gradient1.append("stop").attr("offset", "0%").attr("stop-color", "blue");
-gradient1.append("stop").attr("offset", "100%").attr("stop-color", "green");
 const color = scaleOrdinal(schemeCategory20);
 
 var dataNodes = [];
+var dataNodesById = {};
 var dataLinks = [];
 var link, node, simulation;
 var tickStyle = "direct";
+
+const emotionColors = {
+  "anger": "red",
+  "disgust": "blue",
+  "fear": "orange",
+  "joy": "pink",
+  "sadness": "black"
+}
 
 function strokeEdge(d) {
   let source, target
@@ -54,8 +60,13 @@ function strokeEdge(d) {
     target = d.target;
 
   var id = "S" + source.id  +"T" + target.id;
-  var gradient1 = defs.append("linearGradient").attr("id",  id);
-  gradient1.append("stop").attr("offset", "0%").attr("stop-color", target.color);
+  var gradient1 = defs.append("linearGradient").attr("id",  id)
+   .attr("offset", "0%")
+   .attr("offset", "100%")
+   //.attr("x1", "0%")
+   //.attr("x2", "100%")
+   //.attr("y1", "0%")
+   //.attr("y2", "100%");
   gradient1.append("stop").attr("offset", "100%").attr("stop-color", source.color);
   return "url(#" + id + ")";
 }
@@ -106,8 +117,8 @@ const ticked = function() {
 
 function drawInitial(){
   simulation = forceSimulation()
-            //.force("link", forceLink().id(function(d) { return d.index }))
-            .force("link", forceLink(dataLinks).distance(200))
+            .force("link", forceLink().id(function(d) { return d.index }).distance(150))
+            //.force("link", forceLink(dataLinks).distance(200))
             .force("collide",forceCollide( function(d){return d.r + 8 }).iterations(16) )
             .force("charge", forceManyBody())
             .force("center", forceCenter(width / 2, width / 2))
@@ -159,7 +170,7 @@ function updateGraph(){
 
   const nodeEnter = node
     .append("circle")
-    //.attr("fill", function(d) { return color(d.id); })
+    .attr("fill", function(d) { return color(d.id); })
     .call(function(node) {
         node.transition()
         .duration(transitionDuration)
@@ -220,7 +231,6 @@ function updateGraph(){
     .ease(transitionType)
     .attr("stroke-opacity", 0)
     .attrTween("x1", function(d) { return function() {
-      debugger;
         return d.source.x;
       };
     })
@@ -250,13 +260,13 @@ function updateGraph(){
 }
 
 function nodesMap(e, i) {
-  i = i || dataNodes.length;
-  return {
-    id: i, r: e.r || 10,
-    label: e.name,
-    color: color(i),
-    img: "https://dl.dropboxusercontent.com/u/19954023/marvel_force_chart_img/top_spiderman.png",
-  };
+  e.internal_id = e.id;
+  e.id = i;
+  e.r = e.r || 10;
+  e.label = e.name;
+  e.color = color(e.id);
+  e.img = "https://leap.hackback.tech/api/images/" + e.internal_id;
+  return e;
 }
 
 json('https://leap.hackback.tech/api/graph', (error, data) => {
@@ -264,20 +274,35 @@ json('https://leap.hackback.tech/api/graph', (error, data) => {
 
   drawInitial();
 
-  data.nodes.push({name: "foo"});
   dataNodes = data.nodes.map(nodesMap);
-  data.links = [
-    { source: 1, target: 0},
-    { source: 0, target: 2},
-    { source: 1, target: 2},
-  ];
+  _.each(dataNodes, (e) => {
+    //dataNodesById[e.id] = e;
+    dataNodesById[e.internal_id] = e;
+  })
+  console.log(data.nodes);
+  console.log(dataNodesById);
+  data.links = []
+  _.each(data.graph, (connections, personId)  => {
+    _.each(connections, (connection, connectionId) => {
+      data.links.push({source: dataNodesById[personId].id, target: dataNodesById[connectionId].id});
+    });
+  });
   dataLinks = data.links;
+  console.log(data.links);
 
+  var removedNode, removedLinks = [];
   //setTimeout(function() {
-    //tickStyle = "animation";
-    //dataNodes.push(nodesMap({label: "bar", color: "green", r: 10}));
-    //dataLinks.push({source: 0, target: 3});
+    ////tickStyle = "animation";
+    //removedNode = dataNodes.pop();
+    //dataLinks = _.remove(dataLinks, (link)  => {
+      //if (link.source.id === removedNode.id || link.target.id === removedNode.id) {
+          //console.log(link);
+          //return false;
+      //} else {
+          //return true;
+      //}
+    //});
     //updateGraph();
-  //}, 1000);
+  //}, 100);
   updateGraph();
 });
