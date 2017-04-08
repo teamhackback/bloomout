@@ -85,9 +85,11 @@ const ticked = function() {
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
 
-    node
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
+    //node
+        //.attr("cx", function(d) { return d.x; })
+        //.attr("cy", function(d) { return d.y; });
+
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
   } else {
     const animationTime = 150;
     link.transition().ease(easeLinear).duration(animationTime)
@@ -135,24 +137,72 @@ function updateGraph(){
   // Apply the general update pattern to the nodes.
   node = node.
     data(dataNodes, function(d) { return d.id;});
+
+  // Exit any old nodes.
   node.exit()
     .transition()
     .duration(transitionDuration)
     .ease(transitionType)
     .attr("r", 0).remove();
+
   node = node
     .enter()
-    .append("circle")
-    .attr("fill", function(d) { return color(d.id); })
-    .call(function(node) { node.transition()
-        .duration(transitionDuration)
-        .ease(transitionType)
-        .attr("r", 10); })
+    .append("svg:g")
+    .attr("class", "node")
     .call(drag()
            .on("start", dragstarted)
            .on("drag", dragged)
            .on("end", dragended))
-    .merge(node);
+    .on("click", function(d) {
+        console.log("d", d);
+    })
+
+  const nodeEnter = node
+    .append("circle")
+    //.attr("fill", function(d) { return color(d.id); })
+    .call(function(node) {
+        node.transition()
+        .duration(transitionDuration)
+        .ease(transitionType)
+        .attr("r", 10); })
+
+  const images = node.append("svg:image")
+        .attr("xlink:href",  function(d) { return d.img;})
+        .attr("x", function(d) { return -25;})
+        .attr("y", function(d) { return -25;})
+        .attr("height", 50)
+        .attr("width", 50);
+
+  images.on( 'click', function (d) {
+          console.log("d", d);
+           })
+          .on( 'mouseenter', function() {
+            // select element in current context
+            select( this )
+              .transition()
+              .attr("x", function(d) { return -60;})
+              .attr("y", function(d) { return -60;})
+              .attr("height", 100)
+              .attr("width", 100);
+          })
+          // set back
+          .on( 'mouseleave', function() {
+            select( this )
+              .transition()
+              .attr("x", function(d) { return -25;})
+              .attr("y", function(d) { return -25;})
+              .attr("height", 50)
+              .attr("width", 50);
+          });
+
+  node.append("text")
+      .attr("class", "nodetext")
+      .attr("x", 20)
+      .attr("y", 25+15)
+      .attr("fill", "black")
+      .text(function(d) { return d.label; });
+
+  node = node.merge(node);
 
   node.transition()
     .duration(800)
@@ -201,7 +251,12 @@ function updateGraph(){
 
 function nodesMap(e, i) {
   i = i || dataNodes.length;
-  return {id: i, r: e.r || 10, label: e.name, color: "red"};
+  return {
+    id: i, r: e.r || 10,
+    label: e.name,
+    color: color(i),
+    img: "https://dl.dropboxusercontent.com/u/19954023/marvel_force_chart_img/top_spiderman.png",
+  };
 }
 
 json('https://leap.hackback.tech/api/graph', (error, data) => {
@@ -218,11 +273,11 @@ json('https://leap.hackback.tech/api/graph', (error, data) => {
   ];
   dataLinks = data.links;
 
-  setTimeout(function() {
-    tickStyle = "animation";
-    dataNodes.push(nodesMap({label: "bar", color: "green", r: 10}));
-    dataLinks.push({source: 0, target: 3});
-    updateGraph();
-  }, 1000);
+  //setTimeout(function() {
+    //tickStyle = "animation";
+    //dataNodes.push(nodesMap({label: "bar", color: "green", r: 10}));
+    //dataLinks.push({source: 0, target: 3});
+    //updateGraph();
+  //}, 1000);
   updateGraph();
 });
