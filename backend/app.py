@@ -6,15 +6,10 @@ import os
 from os import environ
 app = Flask(__name__)
 from watson import nltk, tone, personality
-from pymongo import MongoClient
 import datetime
 import pymongo
 from bson.json_util import dumps
-
-mongo_client = MongoClient()
-leap = mongo_client['leap']
-employees = leap['employees']
-messages = leap['messages']
+from mongo_base import employees, messages
 
 @app.route('/')
 def hello_world():
