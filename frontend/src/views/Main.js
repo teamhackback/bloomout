@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Tiles from './Tiles';
+import ProgressBar from './ProgressBar';
 import Styles from './Main.css';
+import logo from '../icon.svg';
 
 class SplitLayout extends Component {
   render() {
@@ -23,12 +25,12 @@ const Button = (props) => (
 
 const WelcomeLeftScreen = (props) => (
 <div className="WelcomeLeftScreen animated fadeIn">
-  <div>logo</div>
+  <img src={logo} role="presentation" />
   <h1>Welcome, <span className="c-p">hackBack</span></h1>
   <strong>This is your risk management application</strong>
   <p>
     Discover what risks you have in your management and employee relations.
-    Pop-up your official trust fund polaroid, put a bird on it stumptown enamel semantics actually.
+    Pop-up your official trust fund polaroid, put a bird on it, and find lorem ipsum semantics easily.
   </p>
   <Button onClick={props.showOverview}>Show me more</Button>
 </div>
@@ -66,7 +68,7 @@ const WelcomeOverviewDetailed = () => (
 );
 const WelcomeOverviewBasic = () => (
   <div className="WelcomeOverviewBasic dark-theme">
-    basic overview left
+    <ProgressBar progress="80" infoText="Overall risk" />
   </div>
 );
 
