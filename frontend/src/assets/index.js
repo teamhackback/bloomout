@@ -17,7 +17,30 @@ const Images = {
       require("./icons/Artboard6.svg"),
     ],
     thumbs: require("./icons/Thumbsup.svg")
-  }
+  },
+  people: [
+    require("./people/2.jpg"),
+    require("./people/1.jpg"),
+    require("./people/6.jpg"),
+    require("./people/7.jpg"),
+    require("./people/9.jpg"),
+    require("./people/14.jpg"),
+    require("./people/4.jpg"),
+    require("./people/12.jpg"),
+    require("./people/13.jpg"),
+    require("./people/10.jpg"),
+    require("./people/11.jpg"),
+    require("./people/12.jpg"),
+    require("./people/13.jpg"),
+    require("./people/14.jpg"),
+    require("./people/15.jpg"),
+    require("./people/16.jpg"),
+    require("./people/17.jpg"),
+    require("./people/18.jpg"),
+    require("./people/19.jpg"),
+    require("./people/20.jpg")
+  ]
+
 }
 
 export default Images;

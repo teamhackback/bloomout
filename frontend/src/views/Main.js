@@ -155,51 +155,73 @@ class Employee extends Component {
   }
 }
 
+const renderPeopleListItem = (ind) => (
+  <img src={Images.people[ind]} role="presentation" className="PeopleListViewItem" />
+);
+
 const PeopleOverviewBasic = () => (
   <div className="PeopleOverviewBasic dark-theme animated fadeIn">
     <div className="tile-main-text">Risks per person</div>
   </div>
 );
 const PeopleListView = () => (
-  <div className="PeopleListView animated fadeIn">
-    <Tiles tiles={[
+  <div className="PeopleListView animated fadeIn white-theme">
+    <Tiles whiteTheme link="/profile" tiles={[
       {
-        name: "Michael Barla",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Michael Barla"
       },
       {
-        name: "Rudy Jones",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Rudy Jones"
       },
       {
-        name: "John Mnemonic",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "John Moore"
       },
       {
-        name: "Rainbow Dash",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Summer Dash"
       },
       {
-        name: "Sergiy Proper",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Sergiy Proper"
       },
       {
-        name: "Elizabeth Smith",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Eli Smith"
       },
       {
-        name: "Max Magnussen",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Max Magnu"
       },
       {
-        name: "Zombi Zamba",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Zombi Zamba"
       },
       {
-        name: "Robert Dresden",
-        renderContent: () => <ProgressBar progress="56" colored />
+        name: "Rob Dresden"
+      },
+      {
+        name: "Michael Barla"
+      },
+      {
+        name: "Rudy Jones"
+      },
+      {
+        name: "John Moore"
+      },
+      {
+        name: "Summer Dash"
+      },
+      {
+        name: "Sergiy Proper"
+      },
+      {
+        name: "Eli Smith"
+      },
+      {
+        name: "Max Magnu"
+      },
+      {
+        name: "Zombi Zamba"
       }
-    ]} />
+    ].map((c, ind) => {
+      c.renderContent = () => renderPeopleListItem(ind < 10 ? ind : (ind+1)%9);
+      return c;
+    })} />
   </div>
 );
 
@@ -216,10 +238,24 @@ class People extends Component {
   }
 }
 
+class Profile extends Component {
+  render() {
+    return (
+      <SplitLayout
+        left={<PeopleOverviewBasic />}
+        right={<PeopleListView />}
+      >
+      <BackNavBar />
+      </SplitLayout>
+    );
+  }
+}
+
 const Main = {
   Intro,
   Employee,
-  People
+  People,
+  Profile
 }
 
 export default Main;

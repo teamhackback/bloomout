@@ -9,13 +9,13 @@ class Tiles extends Component {
     );
 
     return (
-      <div className="tiles dark-theme">
+      <div className={`tiles ${this.props.whiteTheme ? "white-theme" : "dark-theme"}`}>
         {this.props.tiles.map((tile, ind) => (
           <div key={ind}
             className={`tile animated fadeIn ${tile.tileClass || ""}`}
             onClick={() => window.location = this.props.link}
             style={{
-              background: '#333F49',
+              background: this.props.whiteTheme ? "#fff" : '#333F49',
               animationDelay: `${100*ind}ms`
             }}>
             {tile.renderContent()}
