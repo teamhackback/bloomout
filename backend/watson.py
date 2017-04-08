@@ -7,6 +7,11 @@ from watson_developer_cloud import ToneAnalyzerV3, PersonalityInsightsV3, Natura
 import watson_developer_cloud.natural_language_understanding.features.v1 as features
 import os
 
+# https://www.ibm.com/watson/developercloud/tone-analyzer/api/v3/?python#post-tone
+# https://www.ibm.com/watson/developercloud/personality-insights/api/v3/?curl#response-handling
+# https://www.ibm.com/watson/developercloud/nl-classifier.html
+# https://www.ibm.com/watson/developercloud/natural-language-understanding.html
+
 
 def load(json_file):
     with open(json_file, 'r') as f:
@@ -16,7 +21,8 @@ def tone(text):
     return tone_insights.tone(text)
 
 def nltk(text):
-    return nltk_insights.analyze(features=[features.Entities(), features.Keywords()],text=text, html=None,
+    # https://github.com/watson-developer-cloud/python-sdk/blob/master/watson_developer_cloud/natural_language_understanding/features/v1/__init__.py
+    return nltk_insights.analyze(features=[features.Entities(), features.Emotion(), features.Sentiment(), features.Keywords()],text=text, html=None,
                 clean=True, xpath=None, fallback_to_raw=True,
                 return_analyzed_text=False)
 
