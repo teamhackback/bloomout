@@ -220,6 +220,7 @@ export default class NetworkView extends Component {
       .ease(transitionType)
       .attr("r", 0).remove();
 
+    const cl = this;
     this.d3.node = this.d3.node
       .enter()
       .append("svg:g")
@@ -231,8 +232,8 @@ export default class NetworkView extends Component {
       .on("click", (d) => {
           console.log("d", d);
       })
-      .on( 'mouseenter', (d) => {
-        var self = this;
+      .on( 'mouseenter', function(d) {
+        const self = this;
         select( this.childNodes[0] )
           .transition()
             .attr("cx", function(d) { return -10;})
@@ -246,10 +247,10 @@ export default class NetworkView extends Component {
             .attr("height", 100)
             .attr("width", 100)
           .on("end", function(){
-            self.d3.tip.show.call(self, d, self)
+            cl.d3.tip.show.call(self, d, self)
           });
       })
-      .on( 'mouseleave', (d) => {
+      .on( 'mouseleave', function (d) {
         select( this.childNodes[0] )
           .transition()
           .attr("r", function(d) { return 27;})
@@ -261,7 +262,7 @@ export default class NetworkView extends Component {
              .attr("y", function(d) { return -25;})
              .attr("height", 50)
              .attr("width", 50)
-            .on("end", function(){self.d3.tip.hide(d)});
+            .on("end", function(){cl.d3.tip.hide(d)});
       });
 
     // circle
