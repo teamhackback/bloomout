@@ -18,7 +18,7 @@ body {
   min-height: 100vh;
   background: #FFF;
 }
-h1,h2,h3,h4,h5,h6,.progressBar {
+h1,h2,h3,h4,h5,h6,.progressBar,.tile-main-text {
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -63,13 +63,13 @@ a {
 
 .progressBar {
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 1.7em;
   position: relative;
   width: 100%;
 }
 .tile-main-text {
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 2em;
 }
 
 .dark-theme {
@@ -90,6 +90,8 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: url(./pane-background/Blue.jpg) no-repeat left center;
+  background-size: cover;
 }
 .WelcomeOverviewBasic .progressBar {
   width: 50%;
