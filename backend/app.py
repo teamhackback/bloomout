@@ -12,14 +12,15 @@ from flask import abort, Flask, jsonify, request,\
 from watson import nltk, tone, personality
 from werkzeug import Response
 from flask_socketio import SocketIO
-import eventlet
-eventlet.monkey_patch()
+# import eventlet
+# eventlet.monkey_patch()
 
 UPLOAD_FOLDER = './images/'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-socketio = SocketIO(app, message_queue='redis://', async_mode='eventlet')
+# socketio = SocketIO(app, message_queue='redis://', async_mode='eventlet')
+# socketio = SocketIO(app, message_queue='redis://', async_mode=None)
 
 
 @app.route('/')
@@ -53,6 +54,7 @@ def chat():
     req = request.get_json()
     if "body" not in req:
         abort(400, "No text provided.")
+    # print(req["body"])
     resp = nltk(req["body"])
     messages.insert_one({
         "emotion": resp,
@@ -61,7 +63,7 @@ def chat():
         "body": req["body"],
         'created_at': datetime.datetime.now()
         })
-    socketio.emit('new_chat', resp)
+    # socketio.emit('new_chat', resp)
     return jsonify(resp)
 
 
@@ -151,10 +153,11 @@ def get_or_create_messages():
             )
 
 
-@socketio.on('connect')
-def test_connect():
-    socketio.emit('new_connect', {'data': 'Connected', 'count': 0})
+# @socketio.on('connect')
+# def test_connect():
+    # socketio.emit('new_connect', {'data': 'Connected', 'count': 0})
 
 if __name__ == '__main__':
     port = environ.get("PORT", "6001")
-    socketio.run(app, debug=True, port=int(port), use_reloader=True)
+    # socketio.run(app, debug=True, port=int(port), use_reloader=True)
+    app.run(debug=True, port=int(port), use_reloader=True)

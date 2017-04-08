@@ -1,12 +1,21 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
 import sys
 import json
 import time
 from mongo_base import messages
+import os
+import eventlet
+from flask_socketio import SocketIO
+eventlet.monkey_patch()
+socketio = SocketIO(message_queue='redis://', async_mode='eventlet')
 
 
 saved_messages = None
+script_dir = os.path.dirname(os.path.realpath(__file__))
 
-with open('./message_dump', 'r') as f:
+with open(os.path.join(script_dir, 'message_dump'), 'r') as f:
     contents = f.read()
     saved_messages = json.loads(contents)
 
@@ -26,6 +35,7 @@ try:
             del message['_id']
         message['id'] = counter
         messages.insert_one(message)
+        socketio.emit('new_chat', message)
         print('inserted message: ', counter)
 
         counter += 1
