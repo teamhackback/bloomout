@@ -23,14 +23,15 @@ import _ from 'lodash';
 
 import './style/style.less';
 
-const width = 800,
-    height = 800;
+const width = 1000,
+    height = 1000;
 
 const svg = select('body').append('svg')
     .attr('width', width)
     .attr('height', height);
 
 const defs = svg.append("defs");
+const gradiants = defs.append("g").attr("id", "gradiant_group");
 const app = document.getElementById("app");
 app.style.display = "none";
 
@@ -40,7 +41,8 @@ var dataNodes = [];
 var dataNodesById = {};
 var dataLinks = [];
 var link, node, simulation;
-var tickStyle = "direct";
+//var tickStyle = "direct";
+var tickStyle = "animated";
 
 const emotionColors = {
   "anger": "red",
@@ -62,15 +64,29 @@ function strokeEdge(d) {
     target = d.target;
 
   var id = "S" + source.id  +"T" + target.id;
-  var gradient1 = defs.append("linearGradient").attr("id",  id)
-  gradient1.append("stop").attr("offset", "0%").attr("stop-color", d.sourceColor);
-   //.attr("offset", "0%")
-   //.attr("offset", "100%")
-   //.attr("x1", "0%")
-   //.attr("x2", "100%")
-   //.attr("y1", "0%")
-   //.attr("y2", "100%");
-  gradient1.append("stop").attr("offset", "100%").attr("stop-color", d.targetColor);
+  var gradient1 = gradiants.append("linearGradient").attr("id",  id)
+  let x2 = target.x - source.x;
+  let y2 = target.y - source.y;
+  let maxD = Math.max(Math.abs(x2), Math.abs(y2));
+  let x1 = 0;
+  let y1 = 0;
+  x2 = (Math.round(x2 * 100 / maxD) || 0);
+  y2 = (Math.round(y2 * 100 / maxD) || 0);
+  if (x2 < 0) {
+    x1 = -x2;
+    x2 = 0;
+  }
+  if (y2 < 0) {
+    y1 = -y2;
+    y2 = 0;
+  }
+  gradient1
+   .attr("x1", x1 + "%")
+   .attr("y1",  y1 + "%")
+   .attr("x2", x2 + "%")
+   .attr("y2", y2 + "%");
+  gradient1.append("stop").attr("offset", "20%").attr("stop-color", d.sourceColor);
+  gradient1.append("stop").attr("offset", "80%").attr("stop-color", d.targetColor);
   return "url(#" + id + ")";
 }
 
@@ -91,6 +107,7 @@ function dragended(d) {
     d.fy = null;
 }
 
+var tickCounter = 0;
 const ticked = function() {
   if (tickStyle === "direct") {
     link
@@ -111,17 +128,24 @@ const ticked = function() {
         .attr("y1", function(d) { return d.source.y; })
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
+    if (tickCounter % 20 == 0 || tickCounter < 2) {
+      gradiants.html("");
+      link.attr('stroke', strokeEdge);
+    }
+    tickCounter++;
 
     node.transition().ease(easeLinear).duration(animationTime)
-              .attr('cx', function(d) { return d.x; })
-              .attr('cy', function(d) { return d.y; });
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+    //node.transition().ease(easeLinear).duration(animationTime)
+              //.attr('cx', function(d) { return d.x; })
+              //.attr('cy', function(d) { return d.y; });
   }
 }
 
 function drawInitial(){
   simulation = forceSimulation()
-            .force("link", forceLink().id(function(d) { return d.index }).distance(350))
-            //.force("link", forceLink(dataLinks).distance(200))
+            //.force("link", forceLink().id(function(d) { return d.index }))
+            .force("link", forceLink(dataLinks).distance(600).iterations(10))
             .force("collide",forceCollide( function(d){return d.r + 8 }).iterations(16) )
             .force("charge", forceManyBody())
             .force("center", forceCenter(width / 2, width / 2))
@@ -315,18 +339,17 @@ json('https://leap.hackback.tech/api/graph', (error, data) => {
     }, 0);
     return Math.max(acc, f);
   }, 0);
-  const scaleMsgs = scaleLinear().domain([1, maxMsgs]).range([5, 20]);
+  const scaleMsgs = scaleLinear().domain([1, maxMsgs]).range([1, 15]);
   console.log(data.nodes);
   console.log(dataNodesById);
   data.links = []
   _.each(data.graph, (connections, personId)  => {
     _.each(connections, (connection, connectionId) => {
-      if (connection.nr_msgs < 2)
-        return;
+      //if (connection.nr_msgs < 2)
+        //return;
       const sourceColor = getColorByEmotion(connection);
       const targetColor = getColorByEmotion((data.graph[connectionId] || {} )[personId]);
       const scaledWidth = scaleMsgs(connection.nr_msgs);
-      console.log(connection.nr_msgs, scaledWidth);
       data.links.push({
         source: dataNodesById[personId].id,
         target: dataNodesById[connectionId].id,
