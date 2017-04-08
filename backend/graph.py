@@ -46,7 +46,7 @@ def build_graph():
     g = {k: dict(v) for k, v in g.items()}
     return {
         "graph": g,
-        "nodes": list(people)
+        "nodes": [{"name": person} for person in people],
     }
 
 if __name__ == '__main__':
