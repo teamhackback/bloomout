@@ -44,6 +44,7 @@ a {
   height: 33.33%;
   position: relative;
   cursor: pointer;
+  padding: 1em;
 }
 .tiles .tile:hover {
   background-color: #ddd !important;

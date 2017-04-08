@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Tiles from './Tiles';
 import Styles from './Main.css';
 
 class SplitLayout extends Component {
@@ -11,24 +12,6 @@ class SplitLayout extends Component {
         <div className={Styles.SplitPane}>
           {this.props.right}
         </div>
-      </div>
-    );
-  }
-}
-
-class Tiles extends Component {
-  render() {
-    const colors = ['#A4A4A4', "#727272", "#B7B7B7", "#918E8E", "#606060", "#4D4D4D"];
-    return (
-      <div className="tiles">
-        {this.props.tiles.map((tile, ind) => (
-          <div key={ind} className={`tile`}
-            style={{
-              background: colors[ind]
-            }}>
-            <span className="title">{tile.name}</span>
-          </div>
-        ))}
       </div>
     );
   }
@@ -55,22 +38,28 @@ const WelcomeOverviewDetailed = () => (
   <div className="WelcomeOverviewDetailed animated fadeIn">
     <Tiles tiles={[
       {
-        name: 'Employee risks'
+        name: 'Employee risks',
+        renderContent: () => <div>hi</div>
       },
       {
-        name: 'Project risks'
+        name: 'Project risks',
+        renderContent: () => <div>hi</div>
       },
       {
-        name: 'Client risks'
+        name: 'Client risks',
+        renderContent: () => <div>hi</div>
       },
       {
-        name: 'Quality of interactions'
+        name: 'Quality of interactions',
+        renderContent: () => <div>hi</div>
       },
       {
-        name: 'Recommendations'
+        name: 'Recommendations',
+        renderContent: () => <div>hi</div>
       },
       {
-        name: 'Black box score'
+        name: 'Black box score',
+        renderContent: () => <div>hi</div>
       }
     ]} />
   </div>
@@ -97,7 +86,7 @@ class Intro extends Component {
   render() {
     return (
       <SplitLayout
-        left={ !this.state.overviewShown ?
+        left={ this.state.overviewShown ?
           <WelcomeOverviewDetailed /> : <WelcomeLeftScreen showOverview={this.showOverview}/>
         }
         right={<WelcomeOverviewBasic />}
