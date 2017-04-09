@@ -49,7 +49,11 @@ class ProfileOverviewDetailed extends Component {
         anger: Math.round(data['anger'] * 100),
         sadness: Math.round(data['sadness'] * 100),
         disgust: Math.round(data['disgust'] * 100),
-        fear: Math.round(data['fear'] * 100)
+        fear: Math.round(data['fear'] * 100),
+        participation: data['participation'],
+        participation_total: data['participation_total'],
+        interactions: data['interactions'],
+        engagement: data['engagement'],
       })
   }
 
@@ -74,12 +78,12 @@ class ProfileOverviewDetailed extends Component {
         <Tiles link="#" tiles={[
           {
             name: 'Interactions',
-            renderContent: () => <ProgressBar progress="42" colored />,
+            renderContent: () => <ProgressBar progress={this.state.interactions} colored />,
             link: `/left/profile/${id}/basic/right/network`
           },
           {
             name: 'Engagement',
-            renderContent: () => <ProgressBar progress="56" colored />
+            renderContent: () => <ProgressBar progress={this.state.engagement} colored />
           },
           {
             name: 'Avg. Weekly Hours',
@@ -103,7 +107,7 @@ class ProfileOverviewDetailed extends Component {
           },
           {
             name: 'Participation',
-            renderContent: () => <div className="tile-main-text colspan-2">158/160</div>
+            renderContent: () => <div className="tile-main-text colspan-2">{this.state.participation}/{this.state.participation_total}</div>
           },
           {
             name: 'Number of Projects',
