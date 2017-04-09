@@ -23,7 +23,7 @@ const WelcomeLeftScreen = (props) => (
 <div className="WelcomeLeftScreen animated fadeIn">
   <img src={Images.logo} role="presentation" />
   <h1>Welcome, <span className="c-p">hackBack</span></h1>
-  <strong>This is your risk management application</strong>
+  <strong>A risk management app for your company</strong>
   <p>
     Receive automated feedback on your employee's work satisfaction and their engagement.
     Analyze a combination of employee statistics to prevent burnout before it happens.
