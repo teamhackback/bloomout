@@ -170,6 +170,7 @@ export default class NetworkView extends Component {
       if (this.internal.tickCounter % 20 === 0 || this.internal.tickCounter < 2) {
         this.d3.gradiants.html("");
         this.d3.link.attr('stroke', this.strokeEdge);
+        //this.d3.link.style("stroke-width", (d) => d.width);
       }
       this.internal.tickCounter++;
 
@@ -180,10 +181,12 @@ export default class NetworkView extends Component {
 
   drawInitial = () => {
     this.d3.simulation = forceSimulation()
-              .force("link", forceLink().id(function(d) { return d.id }).distance(150).iterations(16))
-              //.force("collide",forceCollide( function(d){return d.r + 8 }).iterations(16) )
+              .force("link", forceLink().id(function(d) { return d.id }).distance(250).iterations(16))
+              .force("collide",forceCollide( function(d){return d.r + 8 }).iterations(16) )
               //.force("charge", forceManyBody())
-              .force("charge", forceManyBody().strength(-1))
+              .force("charge", () => -5000)
+              //.force("charge", forceManyBody().strength(0.3))
+              .velocityDecay(0.9)
               .force("center", forceCenter(this.state.width / 2, this.state.height / 2))
               .on("tick", this.ticked);
 
@@ -219,7 +222,7 @@ export default class NetworkView extends Component {
     // Exit any old nodes.
     this.d3.node.exit()
       .transition()
-      .duration(this.state.transitionDuration)
+      .duration(200)
       .ease(transitionType)
       .attr("r", 0).remove();
 
@@ -303,7 +306,7 @@ export default class NetworkView extends Component {
     this.d3.link = this.d3.link.data(this.state.dataLinks, function(d) { return d.id; });
     this.d3.link.exit()
       .transition()
-      .duration(this.state.transitionDuration)
+      .duration(200)
       .ease(transitionType)
       .attr("stroke-opacity", 0)
       .attrTween("x1", function(d) { return function() {
@@ -318,17 +321,19 @@ export default class NetworkView extends Component {
     this.d3.link = this.d3.link
       .enter()
       .append("line")
-      .attr("stroke-width",(d) => {
-        return d.width;
-      })
       .attr("stroke", this.strokeEdge)
+      .merge(this.d3.link);
+    this.d3.link
       .call((link) => {
         link
           .transition()
-          .duration(this.state.transitionDuration)
+          .duration(20)
           .ease(transitionType)
-          .attr("stroke-opacity", 1); })
-      .merge(this.d3.link);
+          .attr("stroke-opacity", 1)
+          .attr("stroke-width",(d) => {
+            return d.width;
+          });
+      });
 
     // Update and restart the simulation.
     this.d3.simulation.nodes(this.state.dataNodes);
@@ -359,8 +364,7 @@ export default class NetworkView extends Component {
         }, 0);
         return Math.max(acc, f);
       }, 0);
-      console.log("max", maxMsgs);
-      const scaleMsgs = scaleLinear().domain([1, maxMsgs]).range([1, 15]);
+      const scaleMsgs = scaleLinear().domain([1, maxMsgs + 1]).range([1, 15]);
       const dataLinks = []
       _.each(data.graph, (connections, personId)  => {
         _.each(connections, (connection, connectionId) => {
@@ -368,7 +372,6 @@ export default class NetworkView extends Component {
             //return;
           const sourceColor = this.getColorByEmotion(connection);
           const targetColor = this.getColorByEmotion((data.graph[connectionId] || {} )[personId]);
-          console.log(connection.nr_msgs);
           const scaledWidth = scaleMsgs(connection.nr_msgs);
           const sourceId = personId;
           const targetId = connectionId;
@@ -383,11 +386,11 @@ export default class NetworkView extends Component {
         });
       });
 
-      console.log(this.state.dataLinks);
       this.setState((state) => {
         const nodeEqual = state.dataNodes.length === dataNodes.length && _.isEqualWith(dataNodes, state.dataNodes, (a, b) => a.id === b.id);
-        const linkEqual = state.dataLinks.length === dataLinks.length && _.isEqualWith(dataLinks, state.dataLinks, (a, b) => a.id === b.id && a.width == b.width && a.targetColor == b.targetColor);
-        console.log(nodeEqual, linkEqual);
+        const linkEqual = state.dataNodes.length === dataNodes.length && _.differenceWith(state.dataLinks, dataLinks, (a, b) => {
+          return a.id === b.id && a.width === b.width && a.targetColor === b.targetColor
+        }).length === 0;
         const res = {};
         if (!nodeEqual) {
           res.dataNodes = dataNodes;
@@ -395,7 +398,6 @@ export default class NetworkView extends Component {
         if (!linkEqual) {
           res.dataLinks = dataLinks;
         }
-        console.log(res);
         return res;
       });
     });
