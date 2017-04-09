@@ -21,10 +21,22 @@ export const getRightPart = function() {
 
 export class RightLinkTo extends Component {
   render() {
-    const to = `/left${getRightPart()}/right${this.props.to}`;
+    const {
+      to,
+      children,
+      ...other
+    } = this.props;
+    const pathname = `/left${getRightPart()}/right${to}`;
+    const toObj = {
+      pathname: pathname
+    };
+    if (other.state !== undefined) {
+      toObj.state = other.state
+    }
+    console.log("link", toObj);
     return (
-      <Link to={to}>
-        { this.props.children }
+      <Link to={toObj}>
+        { children }
       </Link>
     );
   }

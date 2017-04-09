@@ -28,7 +28,7 @@ const WelcomeLeftScreen = (props) => (
     Receive automated feedback on your employee's work satisfaction and their engagement.
     Analyze a combination of employee statistics to prevent burnout before it happens.
   </p>
-  <RightLinkTo to="/overview/detailed">
+  <RightLinkTo to="/overview/detailed"  state={{transition: 'slideLeft'}}>
     <Button>Show me more</Button>
   </RightLinkTo>
 </div>

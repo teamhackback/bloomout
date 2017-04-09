@@ -237,3 +237,11 @@ a.button:hover {
   opacity: 1;
   transition: opacity 250ms ease-in;
 }
+.slideLeft{
+  transform: translate(100%);
+}
+
+.slideLeft.slideLeft-active {
+  transform: translate(0%);
+  transition: opacity 250ms ease-in;
+}
