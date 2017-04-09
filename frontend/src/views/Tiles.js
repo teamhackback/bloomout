@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 class Tiles extends Component {
   render() {
     // const colors = ['#A4A4A4', "#727272", "#B7B7B7", "#918E8E", "#606060", "#4D4D4D"];
-    
     const renderIconElement = (src) => (
       <img src={src} role="presentation" className="icon"/>
     );
@@ -13,7 +12,10 @@ class Tiles extends Component {
         {this.props.tiles.map((tile, ind) => (
           <div key={ind}
             className={`tile animated fadeIn ${tile.tileClass || ""}`}
-            onClick={() => window.location = this.props.link}
+            onClick={() => {
+              let link = tile.id !== undefined ? this.props.link + "/" + tile.id : this.props.link;
+              window.location = link;
+            }}
             style={{
               background: this.props.whiteTheme ? "#fff" : '#333F49',
               animationDelay: `${100*ind}ms`

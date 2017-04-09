@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import Tiles from './Tiles';
+import PeopleListView from './PeopleListView.js'
+import ProfileOverviewBasic from './ProfileOverviewBasic.js'
+import ProfileOverviewDetailed from './ProfileOverviewDetailed.js'
 import ProgressBar from './ProgressBar';
 import SplitLayout from './SplitLayout';
 import Images from '../assets';
@@ -171,66 +174,6 @@ const PeopleOverviewBasic = () => (
     <div className="tile-main-text">Risks per person</div>
   </div>
 );
-const PeopleListView = () => (
-  <div className="PeopleListView animated fadeIn white-theme">
-    <Tiles whiteTheme link="/profile" tiles={[
-      {
-        name: "Michael Barla"
-      },
-      {
-        name: "Rudy Jones"
-      },
-      {
-        name: "John Moore"
-      },
-      {
-        name: "Summer Dash"
-      },
-      {
-        name: "Sergiy Proper"
-      },
-      {
-        name: "Eli Smith"
-      },
-      {
-        name: "Max Magnu"
-      },
-      {
-        name: "Zombi Zamba"
-      },
-      {
-        name: "Rob Dresden"
-      },
-      {
-        name: "Michael Barla"
-      },
-      {
-        name: "Rudy Jones"
-      },
-      {
-        name: "John Moore"
-      },
-      {
-        name: "Summer Dash"
-      },
-      {
-        name: "Sergiy Proper"
-      },
-      {
-        name: "Eli Smith"
-      },
-      {
-        name: "Max Magnu"
-      },
-      {
-        name: "Zombi Zamba"
-      }
-    ].map((c, ind) => {
-      c.renderContent = () => renderPeopleListItem(ind < 10 ? ind : (ind+1)%9);
-      return c;
-    })} />
-  </div>
-);
 
 class People extends Component {
   render() {
@@ -246,69 +189,12 @@ class People extends Component {
 }
 
 
-const ProfileOverviewBasic = () => (
-  <div className="ProfileOverviewBasic dark-theme animated fadeIn">
-    {renderPeopleListItem(5, 32, 49, 19) }
-    <div className="profile-stats-row" style={{
-        width: "100%", display: "flex", justifyContent: "center", marginBottom: "1em"
-      }}>
-      <div><div className="tile-main-text">19%</div><div>Happiness</div></div>
-      <div><div className="tile-main-text">49%</div><div>Turnover risk</div> </div>
-      <div><div className="tile-main-text">32%</div><div>Risk of burnout</div> </div>
-    </div>
-  </div>
-);
-const ProfileOverviewDetailed = () => (
-  <div className="ProfileOverviewDetailed animated fadeIn">
-    <Tiles link="#" tiles={[
-      {
-        name: 'Interactions',
-        renderContent: () => <ProgressBar progress="42" colored />,
-      },
-      {
-        name: 'Engagement',
-        renderContent: () => <ProgressBar progress="56" colored />
-      },
-      {
-        name: 'Avg weekly',
-        renderContent: () => <div className="tile-main-text">40 h</div>
-      },
-      {
-        name: 'Disgust',
-        renderContent: () => <ProgressBar progress="20" colored reverseColor />
-      },
-      {
-        name: 'Fear',
-        renderContent: () => <ProgressBar progress="78" colored reverseColor />
-      },
-      {
-        name: 'Sadness',
-        renderContent: () => <ProgressBar progress="61" colored reverseColor />
-      },
-      {
-        name: 'Joy',
-        renderContent: () => <ProgressBar progress="8" colored reverseColor />
-      },
-      {
-        name: 'Participation',
-        renderContent: () => <div className="tile-main-text colspan-2">158/160</div>
-      },
-      {
-        name: 'Active tasks',
-        renderContent: () => <div className="tile-main-text">3</div>
-      }
-    ].map((t, ind) => {
-      t.icon = Images.icons.artboards[ind%6];
-      return t;
-    })} />
-  </div>
-);
 class Profile extends Component {
   render() {
     return (
       <SplitLayout
-        left={<ProfileOverviewBasic />}
-        right={<ProfileOverviewDetailed />}
+        left={<ProfileOverviewBasic id={this.props.match.params.id} />}
+        right={<ProfileOverviewDetailed id={this.props.match.params.id} />}
       >
       <BackNavBar />
       </SplitLayout>
