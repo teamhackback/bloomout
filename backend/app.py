@@ -67,6 +67,21 @@ def chat():
         abort(400, "No text provided.")
     # print(req["body"])
     resp = nltk(req["body"])
+
+    employees.update_one(
+        {'id': req['from']},
+        {
+            '$set': {
+                'sentiment': resp['sentiment']['document']['score'],
+                'anger': resp['emotion']['document']['emotion']['anger'],
+                'disgust': resp['emotion']['document']['emotion']['disgust'],
+                'fear': resp['emotion']['document']['emotion']['fear'],
+                'joy': resp['emotion']['document']['emotion']['joy'],
+                'sadness': resp['emotion']['document']['emotion']['sadness'],
+            }
+        }, upsert=True
+    )
+
     messages.insert_one({
         "emotion": resp,
         "from": req["from"],

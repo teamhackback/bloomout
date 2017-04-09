@@ -219,6 +219,7 @@ a {
   width: 67%;
 }
 
+
 /* button style http://bootsnipp.com/snippets/QABqr */
 a.button {
   -webkit-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
@@ -259,6 +260,7 @@ a.button:hover {
   transform: translate(0%);
   transition: opacity 250ms ease-in;
 }
+
 .avatar-wrapper {
   overflow: hidden;
   border-radius:50%;
@@ -340,4 +342,91 @@ a.button:hover {
 /* Styling of overlay */
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
+}
+
+.form-container {
+    max-width: 480px;
+    margin: auto;
+    background-color: #3d4b57;
+    color: #fff;
+    text-align: center;
+    height: 100vh;
+}
+
+.form-container .logo {
+    
+    text-align: left;
+}
+
+.form-container .banner {
+    text-transform: uppercase;
+    font-size: 1.7em;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.form-container form {
+    display: grid;
+    text-align: left;
+    padding-top: 20px;
+    max-width: 80%;
+    margin: auto;
+}
+
+.form-container form > label {
+    margin: 10px 0px;
+    color: #9fa3a8;
+    font-size: 0.8em;
+}
+
+.form-container .dropdown {
+    padding: 16px 32px;
+    border: none;
+    background-color: #2e3a44;
+    color: #fff;
+    appearance: none;
+}
+
+.form-container form > textarea {
+    border: none;
+    background-color: #2e3a44;
+    resize: none;
+    height: 150px;
+    font-family: Hind, sans-serif;
+    color: #fff;
+}
+
+.form-container form > textarea {
+    border: none;
+    background-color: #2e3a44;
+    resize: none;
+    height: 150px;
+    padding: 16px 32px;
+    font-family: Hind, sans-serif;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+.button-wrapper button {
+    background-color: #7f8992;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-container form > input[type=submit] {
+    background-color: #057BD9;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    cursor: pointer;
 }

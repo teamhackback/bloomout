@@ -8,7 +8,7 @@ FILES = [f for f in listdir(IMAGES_PATH)
          if isfile(join(IMAGES_PATH, f))]
 
 for f in FILES:
-    size = (72, 72)
+    size = (200, 200)
     mask = Image.new('L', size, 0)
     draw = ImageDraw.Draw(mask) 
     draw.ellipse((0, 0) + size, fill=255)

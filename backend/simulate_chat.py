@@ -4,21 +4,23 @@
 import sys
 import json
 import time
-from mongo_base import messages
+import datetime
 import os
 import eventlet
-from flask_socketio import SocketIO
-eventlet.monkey_patch()
-socketio = SocketIO(message_queue='redis://', async_mode='eventlet')
-import datetime
+import random
+# from flask_socketio import SocketIO
+from mongo_base import messages, employees
+from generate_db import generate_message
+# eventlet.monkey_patch()
+# socketio = SocketIO(message_queue='redis://', async_mode='eventlet')
 
-
-saved_messages = None
-script_dir = os.path.dirname(os.path.realpath(__file__))
-
-with open(os.path.join(script_dir, 'message_dump'), 'r') as f:
-    contents = f.read()
-    saved_messages = json.loads(contents)
+random.seed(9696)
+# saved_messages = None
+# script_dir = os.path.dirname(os.path.realpath(__file__))
+#
+# with open(os.path.join(script_dir, 'message_dump'), 'r') as f:
+    # contents = f.read()
+    # saved_messages = json.loads(contents)
 
 print('dropping previous messages')
 messages.drop()
@@ -26,19 +28,30 @@ messages.drop()
 try:
     counter = 0
     while True:
-        if counter == 8:
+        if counter == 30:
             print('dropping previous messages')
             counter = 0
             messages.drop()
 
-        message = saved_messages[counter % len(saved_messages)]
-        if '_id' in message:
-            del message['_id']
-        message['id'] = counter
-        message['created_at'] = datetime.datetime.now()
+        # message = saved_messages[counter % len(saved_messages)]
+        # if '_id' in message:
+            # del message['_id']
+#
+        # message['id'] = counter
+        # message['created_at'] = datetime.datetime.now()
+        # messages.insert_one(message)
+        message = generate_message(counter, random.randint(0, 24999))
         messages.insert_one(message)
-        socketio.emit('new_chat', message)
+
+        # print('updated employee: ', message['from'])
+
+        emp1 = employees.find_one({'id': message['from']})
+        print('after update:', emp1)
+
+        # socketio.emit('new_chat', message)
         print('inserted message: ', counter)
+
+        print('---------------------------------------------------')
 
         counter += 1
         time.sleep(2)
