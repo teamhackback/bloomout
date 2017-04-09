@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from os import environ
+import os
 import datetime
 import pymongo
 from bson.json_util import dumps
@@ -39,14 +40,24 @@ def history():
 
 @app.route('/api/images/<employeeid>')
 def images(employeeid):
+    employee = employees.find_one({"id": int(employeeid)})
+    if employee is None:
+        abort(404, "Not found.")
+    employee = employee["photo"]
+    photoid = os.path.splitext(os.path.basename(employee))[0]
     return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               employeeid + '.jpg')
+                               photoid + '.jpg')
 
 
 @app.route('/api/avatar/<employeeid>')
 def avatars(employeeid):
+    employee = employees.find_one({"id": int(employeeid)})
+    if employee is None:
+        abort(404, "Not found.")
+    employee = employee["photo"]
+    photoid = os.path.splitext(os.path.basename(employee))[0]
     return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               employeeid + '_avatar.png')
+                               photoid + '_avatar.png')
 
 
 @app.route('/api/chat', methods=['POST'])

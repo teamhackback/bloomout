@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import sys
 import json
 import requests
@@ -94,6 +97,15 @@ def get_project_members(i):
 
     return res
 
+avatars = {
+    "male": [1, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 27, 28, 29, 30, 31],
+    "male_counter": 0,
+    "female": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 26],
+    "female_counter": 0,
+}
+
+np.random.shuffle(avatars["male"])
+np.random.shuffle(avatars["female"])
 
 def insert_employees():
     if len(sys.argv) > 1:
@@ -109,19 +121,20 @@ def insert_employees():
 
         for i in range(TOTAL_NUM_EMPLOYEES):
             employee_projects = generate_random_project_list()
-            employee_data = requests.get('https://uinames.com/api/?ext')
+            employee_data = requests.get('https://uinames.com/api/?ext&region=germany')
             employee_data = employee_data.json()
 
             r = requests.get(employee_data['photo'], stream=True)
             with open('./images/' + str(i) + '.jpg', 'wb') as file:
                 shutil.copyfileobj(r.raw, file)
             del r
+            gender = employee_data['gender']
 
             employee = {
                 'id': i,
                 'name': employee_data['name'] + ' ' + employee_data['surname'],
-                'gender': employee_data['gender'],
-                'photo': './images/' + str(i) + '.jpg',
+                'gender': gender,
+                'photo': './images/' + str(avatars[gender][avatars[gender + "_counter"]])+ '.jpg',
                 'projects': generate_random_project_list(),
                 'number_project': len(employee_projects),
                 'salary': random.choice([1, 2, 3]),
@@ -133,6 +146,7 @@ def insert_employees():
                 'department': random.randint(0, len(DEPARTMENTS) - 1),
                 'promotion_last_5years': random.choice([0, 1])
             }
+            avatars[gender + "_counter"] += 1
 
             employees.insert_one(employee)
 
