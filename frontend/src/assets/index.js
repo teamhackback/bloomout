@@ -1,6 +1,7 @@
 
 const Images = {
   logo: require("./icon.svg"),
+  logoSide: require("./logo-side.jpg"),
   paneBackgrounds: {
     red: require("./pane-background/Red.jpg"),
     black: require("./pane-background/Black.jpg"),

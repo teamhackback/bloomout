@@ -55,7 +55,7 @@ export class LeftLinkTo extends Component {
 
 export class LinkTo extends Component {
   render() {
-    const to = `/left${this.props.left}/right/${this.props.right}`;
+    const to = `/left${this.props.left}/right${this.props.right}`;
     return (
       <Link to={to}>
         { this.props.children }
