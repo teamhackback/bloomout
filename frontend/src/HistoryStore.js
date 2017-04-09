@@ -17,7 +17,7 @@ class HistoryStore {
     //socket.on('connect', function(){ console.log("connect");});
     //socket.on('disconnect', function(){});
     this.update();
-    //setInterval(this.update, 500);
+    setInterval(this.update, 500);
   }
   update = () => {
     fetch(SERVER_URL + "/api/history")

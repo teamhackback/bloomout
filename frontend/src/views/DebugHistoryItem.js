@@ -30,13 +30,13 @@ function Value(props) {
 function Sender(props) {
   const person = personStore.getPersonById(props.person) || {};
   const name = person.name || "NAME";
-  const imgSize = 40;
+  const imgSize = 30;
   return (
-    <div style={{"display": "inline-block", "padding": 10}}>
+    <div style={{"display": "inline-block", "padding": 7}}>
       <div className="avatar-wrapper" style={{height: imgSize, width: imgSize, display: "inline-block"}}>
         <img src={SERVER_API_URL + "/images/" + person.id} style={{height: imgSize, width: imgSize}} />
       </div>
-      <div style={{"fontSize": "24px", display: "inline-block", "verticalAlign": "top", "marginTop": 2, "marginLeft": 10}}>
+      <div style={{"fontSize": "18px", display: "inline-block", "verticalAlign": "top", "marginTop": 2, "marginLeft": 5}}>
         {name}
       </div>
     </div>
@@ -129,7 +129,7 @@ export default class DebugHistoryItem extends Component {
       </div>
       <div>
         <Sender text="From" person={item.from} />
-        <span style={{"fontSize": 70, "verticalAlign": "top", "display": "inline-block", "height": 20, "marginTop": -30}}>
+        <span style={{"fontSize": 40, "verticalAlign": "top", "display": "inline-block", "height": 20, "marginTop": -13}}>
           →
         </span>
         <Sender text="To" person={item.to} />
