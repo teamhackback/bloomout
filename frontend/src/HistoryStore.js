@@ -23,9 +23,7 @@ class HistoryStore {
     fetch(SERVER_URL + "/api/history")
     .then(response => response.json())
     .then(items => {
-      this.history = sortBy(items, (e) => {
-
-      });
+      this.history = items;
     });
   }
 }
