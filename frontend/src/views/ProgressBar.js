@@ -52,6 +52,11 @@ class ProgressBar extends Component {
     this.bar.animate(progress / 100);  // Number from 0.0 to 1.0
   }
 
+  componentDidUpdate() {
+    const progress = this.props.progress;
+    this.bar.animate(progress / 100);  // Number from 0.0 to 1.0
+  }
+
   render() {
     return (
       <div id={this.id}
