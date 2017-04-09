@@ -33,7 +33,6 @@ export class RightLinkTo extends Component {
     if (other.state !== undefined) {
       toObj.state = other.state
     }
-    console.log("link", toObj);
     return (
       <Link to={toObj}>
         { children }

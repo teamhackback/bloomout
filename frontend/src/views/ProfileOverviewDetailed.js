@@ -4,6 +4,7 @@ import { SERVER_URL } from '../config';
 import ProgressBar from './ProgressBar';
 import Images from '../assets';
 import Tiles from './Tiles';
+import peopleStore from '../PersonStore';
 
 class ProfileOverviewDetailed extends Component {
   constructor(props) {
@@ -19,30 +20,47 @@ class ProfileOverviewDetailed extends Component {
       fear: 0,
     }
     this.internal = {
-      timer: null
+      timer: null,
+      id: null
     }
   }
 
   loadData = () => {
-    const id = this.props.match.params.id;
+    console.log("load");
+    this.internal.id = this.props.match.params.id;
+    const id = this.internal.id;
+    const person = peopleStore.getPersonById(id);
+    if (person !== undefined) {
+      this.update(person);
+    }
     fetch(SERVER_URL + "/api/employee/" + id)
     .then(response => response.json())
     .then(data => {
-      this.setState({
+      this.update(data);
+    });
+  };
+
+  update(data) {
+    this.setState({
         happiness: Math.round(data['satisfaction'] * 100),
         avg_weekly_hours: Math.round(data['avg_monthly_hours'] / 4),
-        num_projects: data['number_project'], 
+        num_projects: data['number_project'],
         joy: Math.round(data['joy'] * 100),
         anger: Math.round(data['anger'] * 100),
         sadness: Math.round(data['sadness'] * 100),
         disgust: Math.round(data['disgust'] * 100),
         fear: Math.round(data['fear'] * 100)
       })
-    });
-  };
+  }
 
   componentDidMount() {
     this.internal.timer = setInterval(this.loadData, 1500);
+    this.loadData();
+  }
+
+  componentDidUpdate(props) {
+    if (this.internal.id !== this.props.match.params.id)
+      this.loadData();
   }
 
   componentWillUnmount () {
