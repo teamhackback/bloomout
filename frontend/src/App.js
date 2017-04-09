@@ -27,11 +27,19 @@ const routes = [
   },
   {
     path: "/employees/basic",
-    component: Main.PeopleOverviewBasic
+    component: Main.EmployeeOverviewBasic
   },
   {
     path: "/employees/detailed",
-    component: Main.PeopleOverviewListView
+    component: Main.EmployeeOverviewDetailed
+  },
+  {
+    path: "/people/basic",
+    component: Main.PeopleOverviewBasic
+  },
+  {
+    path: "/people/detailed",
+    component: Main.PeopleListView
   },
   {
     path: "/profile/:id/basic",
@@ -79,14 +87,15 @@ class App extends Component {
             <Route path="/form" component={EmailForm} />
             <Route path="/debug" component={DebugView} />
             <Route path="/" component={SplitScreen} />
-            <Route path="/">
-              <Redirect to="/left/overview/intro/right/overview/basic" />
-            </Route>
           </div>
         </div>
       </Router>
     )
   }
 }
+
+            //<Route path="/" exact>
+              //<Redirect to="/left/overview/intro/right/overview/basic" />
+            //</Route>
 
 export default App;

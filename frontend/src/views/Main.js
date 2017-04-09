@@ -89,7 +89,7 @@ const EmployeeOverviewBasic = () => (
 
 const EmployeeOverviewDetailed = () => (
   <div className="EmployeeOverviewDetailed animated fadeIn">
-    <Tiles link="/people" tiles={[
+    <Tiles link="/left/people/basic/right/people/detailed" tiles={[
       {
         name: 'Interactions',
         renderContent: () => <ProgressBar progress="42" colored />,

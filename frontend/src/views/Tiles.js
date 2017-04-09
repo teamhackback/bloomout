@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
-  history,
-} from 'react-router';
+  withRouter
+} from 'react-router-dom';
 
 class Tiles extends Component {
   render() {
@@ -9,7 +9,7 @@ class Tiles extends Component {
     const renderIconElement = (src) => (
       <img src={src} role="presentation" className="icon"/>
     );
-
+    console.log(this.context);
     return (
       <div className={`tiles ${this.props.whiteTheme ? "white-theme" : "dark-theme"}`}>
         {this.props.tiles.map((tile, ind) => (
@@ -17,7 +17,7 @@ class Tiles extends Component {
             className={`tile animated fadeIn ${tile.tileClass || ""}`}
             onClick={() => {
               let link = tile.id !== undefined ? this.props.link + "/" + tile.id : this.props.link;
-              history.state.push(tile.link || link);
+              this.props.history.push(tile.link || link);
             }}
             style={{
               background: this.props.whiteTheme ? "#fff" : '#333F49',
@@ -33,4 +33,4 @@ class Tiles extends Component {
   }
 }
 
-export default Tiles;
+export default withRouter(Tiles);
