@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { SERVER_URL } from '../config';
+import peopleStore from '../PersonStore';
 
 import ProgressBar from './ProgressBar';
 
@@ -22,28 +23,44 @@ class ProfileOverviewBasic extends Component {
       burnout_risk: 0,
     }
     this.internal = {
-      timer: null
+      timer: null,
+      id: null
     }
   }
 
   loadData = () => {
-    const id = this.props.match.params.id;
+    this.internal.id = this.props.match.params.id;
+    const id = this.internal.id;
+    const person = peopleStore.getPersonById(id);
+    if (person !== undefined) {
+      this.update(person);
+    }
     fetch(SERVER_URL + "/api/employee/" + id)
     .then(response => response.json())
     .then(data => {
-      this.setState({
-        name: data['name'],
-        happiness: Math.floor(data['satisfaction'] * 100),
-        turnover_risk: Math.floor(data['turnover_risk'] * 100),
-        burnout_risk: Math.floor(data['burnout_risk'] * 100),
-      });
+      this.update(data);
       console.log(this.state);
     });
   };
 
+  update(data) {
+    this.setState({
+     name: data['name'],
+     happiness: Math.floor(data['satisfaction'] * 100),
+     turnover_risk: Math.floor(data['turnover_risk'] * 100),
+     burnout_risk: Math.floor(data['burnout_risk'] * 100),
+    });
+  }
+
   componentDidMount() {
+    this.loadData();
     this.internal.timer = setInterval(this.loadData, 1500);
   }
+
+  componentDidUpdate(props) {
+    if (this.internal.id !== this.props.match.params.id)
+      this.loadData();
+  };
 
   componentWillUnmount () {
     clearInterval(this.internal.timer);

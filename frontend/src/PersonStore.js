@@ -14,7 +14,8 @@ class PersonStore {
       this.people = items;
     });
   }
-  getPersonById(id) {
+  getPersonById = (id) => {
+    id = parseInt(id);
     return this.people.filter(p => p.id === id)[0];
   }
 }

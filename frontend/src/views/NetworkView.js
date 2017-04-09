@@ -251,7 +251,6 @@ class NetworkView extends Component {
              .on("drag", this.dragged)
              .on("end", this.dragended))
       .on("click", (d) => {
-          console.log("d", d);
           cl.props.history.push(`/left/profile/${d.id}/basic/right/network`);
       })
       .on( 'mouseenter', function(d) {
