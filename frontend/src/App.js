@@ -43,11 +43,11 @@ const routes = [
   },
   {
     path: "/profile/:id/basic",
-    component: Main.ProfileOverviewBasic
+    component: Main.ProfileOverviewBasic,
   },
   {
     path: "/profile/:id/detailed",
-    component: Main.ProfileOverviewDetailed
+    component: Main.ProfileOverviewDetailed,
   },
   {
     path: "/network",
@@ -58,7 +58,6 @@ const routes = [
 routes.forEach((e, i) => {
   e.id = i;
 });
-
 
 const SplitScreen = () => {
   return (

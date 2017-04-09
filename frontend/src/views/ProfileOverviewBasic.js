@@ -21,7 +21,8 @@ class ProfileOverviewBasic extends Component {
   }
 
   componentDidMount() {
-    fetch(SERVER_URL + "/api/employee/" + this.props.id)
+    const id = this.props.match.params.id;
+    fetch(SERVER_URL + "/api/employee/" + id)
     .then(response => response.json())
     .then(data => {
       this.setState({
@@ -31,9 +32,10 @@ class ProfileOverviewBasic extends Component {
   }
 
   render() {
+    const id = this.props.match.params.id;
     return (
       <div className="ProfileOverviewBasic dark-theme animated fadeIn">
-        {renderPeopleListItem(this.props.id, this.props.happiness, 49, 19) }
+        {renderPeopleListItem(id, this.props.happiness, 49, 19) }
         <div className="profile-stats-row" style={{
             width: "100%", display: "flex", justifyContent: "center", marginBottom: "1em"
           }}>

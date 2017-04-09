@@ -16,7 +16,8 @@ class ProfileOverviewDetailed extends Component {
   }
 
   loadData = () => {
-    fetch(SERVER_URL + "/api/employee/" + this.props.id)
+    const id = this.props.match.params.id;
+    fetch(SERVER_URL + "/api/employee/" + id)
     .then(response => response.json())
     .then(data => {
       this.setState({
@@ -37,12 +38,14 @@ class ProfileOverviewDetailed extends Component {
   };
 
   render() {
+  const id = this.props.match.params.id;
     return (
       <div className="ProfileOverviewDetailed animated fadeIn">
         <Tiles link="#" tiles={[
           {
             name: 'Interactions',
             renderContent: () => <ProgressBar progress="42" colored />,
+            link: `/left/profile/${id}/basic/right/network`
           },
           {
             name: 'Engagement',

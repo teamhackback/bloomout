@@ -17,6 +17,7 @@ class Tiles extends Component {
             className={`tile animated fadeIn ${tile.tileClass || ""}`}
             onClick={() => {
               let link = tile.id !== undefined ? this.props.link + "/" + tile.id : this.props.link;
+              console.log(tile.link);
               this.props.history.push(tile.link || link);
             }}
             style={{
