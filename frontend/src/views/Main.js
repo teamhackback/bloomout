@@ -11,20 +11,26 @@ import {RightLinkTo} from '../LinkTo';
 
 import {Button, BackNavBar} from './Buttons';
 
-const WelcomeLeftScreen = (props) => (
-<div className="WelcomeLeftScreen animated fadeIn">
-  <img src={Images.logo} role="presentation" />
-  <h1>Welcome, <span className="c-p">hackBack</span></h1>
-  <strong>A risk management app for your company</strong>
-  <p>
-    Receive automated feedback on your employee's work satisfaction and their engagement.
-    Analyze a combination of employee statistics to prevent burnout before it happens.
-  </p>
-  <RightLinkTo to="/overview/detailed"  state={{transition: 'slideLeft'}}>
-    <Button>Show me more</Button>
-  </RightLinkTo>
-</div>
-);
+class WelcomeLeftScreen extends Component {
+
+  render() {
+    return (
+      <div className="WelcomeLeftScreen animated fadeIn">
+        <img src={Images.logo} role="presentation" />
+        <h1>Welcome, <span className="c-p">hackBack</span></h1>
+        <strong>A risk management app for your company</strong>
+        <p>
+          Receive automated feedback on your employee's work satisfaction and their engagement.
+          Analyze a combination of employee statistics to prevent burnout before it happens.
+        </p>
+        <RightLinkTo to="/overview/detailed"  state={{transition: 'slideLeft'}}>
+          <Button>Show me more</Button>
+        </RightLinkTo>
+      </div>
+    );
+  }
+}
+
 
 const WelcomeOverviewBasic = () => (
   <div className="WelcomeOverviewBasic dark-theme animated fadeIn">
