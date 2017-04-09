@@ -32,8 +32,9 @@ class PeopleListView extends Component {
   render() {
     return (
       <div className="PeopleListView animated fadeIn white-theme">
-        <Tiles whiteTheme link="/profile" tiles={this.state.tiles.map((c, ind) => {
+        <Tiles whiteTheme tiles={this.state.tiles.map((c, ind) => {
           c.renderContent = () => renderPeopleListItem(ind < 10 ? ind : (ind+1)%9);
+          c.link = `/left/profile/${c.id}/basic/right/profile/${c.id}/detailed`;
           return c;
         })} />
       </div>
