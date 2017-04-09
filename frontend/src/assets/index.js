@@ -1,5 +1,7 @@
 
 const Images = {
+  introBg: require("./intro.jpg"),
+  introText: require("./intro-text.png"),
   logo: require("./icon.svg"),
   logoSide: require("./logo-side.jpg"),
   paneBackgrounds: {
