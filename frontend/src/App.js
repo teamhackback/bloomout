@@ -11,6 +11,8 @@ import EmailForm from './views/EmailForm.js'
 import DebugView from './views/DebugView.js'
 import Styles from './views/SplitLayout.css';
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
 const routes = [
   {
 
@@ -61,10 +63,18 @@ routes.forEach((e, i) => {
 
 const SplitScreen = () => {
   return (
+    <ReactCSSTransitionGroup
+            transitionName="fade"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
+    >
     <div className={Styles.SplitLayout}>
         <div className={Styles.SplitPane}>
         <Switch>
           { routes.map(route => <Route key={route.id} path={"/left" + route.path} component={route.component} /> )}
+            <Route path="/" exact>
+              <Redirect to="/left/overview/intro/right/overview/basic" />
+            </Route>
         </Switch>
       </div>
       <div className={Styles.SplitPane}>
@@ -73,6 +83,7 @@ const SplitScreen = () => {
         </Switch>
       </div>
     </div>
+    </ReactCSSTransitionGroup>
   )
 };
 
@@ -82,19 +93,17 @@ class App extends Component {
       <Router>
         <div className="App">
           <div className="App-header">
+            <Switch>
             <Route path="/network" component={Main.Network} />
             <Route path="/form" component={EmailForm} />
             <Route path="/debug" component={DebugView} />
             <Route path="/" component={SplitScreen} />
+          </Switch>
           </div>
         </div>
       </Router>
     )
   }
 }
-
-            //<Route path="/" exact>
-              //<Redirect to="/left/overview/intro/right/overview/basic" />
-            //</Route>
 
 export default App;

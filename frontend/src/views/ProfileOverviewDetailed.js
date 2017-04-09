@@ -32,8 +32,8 @@ class ProfileOverviewDetailed extends Component {
 
     this.internal.timer = setInterval(this.loadData, 500);
   }
-  
-  componentWillUnmount = () => {
+
+  componentWillUnmount () {
     clearInterval(this.internal.timer);
   };
 
