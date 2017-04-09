@@ -11,6 +11,7 @@ import Main from './views/Main.js'
 import EmailForm from './views/EmailForm.js'
 import DebugView from './views/DebugView.js'
 import Styles from './views/SplitLayout.css';
+import Sidebar from './views/Sidebar.js';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
@@ -61,6 +62,9 @@ routes.forEach((e, i) => {
   e.id = i;
 });
 
+
+
+
 class SplitScreen extends Component {
 
   render() {
@@ -77,6 +81,8 @@ class SplitScreen extends Component {
             transitionLeaveTimeout={3000}
     >
     <div className={Styles.SplitLayout}>
+
+      <Sidebar />
         <div className={Styles.SplitPane}>
         <Switch>
           { routes.map(route => <Route key={route.id} location={props.location} path={"/left" + route.path} component={route.component} /> )}
@@ -91,6 +97,7 @@ class SplitScreen extends Component {
         </Switch>
       </div>
     </div>
+
     </ReactCSSTransitionGroup>
   )
   };

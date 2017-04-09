@@ -18,7 +18,7 @@ body {
   min-height: 100vh;
   background: #FFF;
 }
-h1,h2,h3,h4,h5,h6,.progressBar,.tile-main-text {
+h1,h2,h3,h4,h5,h6,.progressBar,.tile-main-text,.bm-menu {
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -174,6 +174,20 @@ a {
 .back-navbar a {
   color: #fff;
 }
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1em;
+  width: 40%;
+  height: 100%;
+  background: greenyellow;
+  transform: translate(-90%);
+}
+.sidebar-nav:hover {
+  transform: translateX(0%);
+}
+
 .profile-stats-row > div {
   margin: 1em;
   width: 20%;
@@ -256,4 +270,74 @@ a.button:hover {
   top:50%;
   left:50%;
   transform: translate(-50%,-50%)
+}
+
+
+/** SIDEBAR */
+.bgMenu button {
+  cursor: pointer;
+}
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #334049;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 30px;
+  width: 30px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #ccc;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #334049;
+  font-size: 1.1em;
+}
+.bm-menu a {
+  color: white;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  padding: 0.7em 2em;
+}
+.side-navlist {
+  display: flex;
+  flex-direction: column;
+}
+.side-navlist > div {
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding: 0;
+}
+.side-navlist > div:hover {
+  background: #2E373E;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
 }
