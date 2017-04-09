@@ -13,6 +13,7 @@ from os.path import isfile, join
 from mongo_base import employees, projects, messages, sentiment_ts
 from classifier import calculate_turnover_risk
 from watson import nltk
+from employees import add_message
 
 
 # seed rng
@@ -41,8 +42,8 @@ def generate_message(message_id, random_text_file_index):
         text = f.read()
 
     emotion = nltk(text)
-    sentiment = emotion['sentiment']['document']['score'],
     # print(emotion)
+    print("generating message")
 
     # add sentiment to timeseries
     # sentiment_ts.insert_one({
@@ -50,76 +51,7 @@ def generate_message(message_id, random_text_file_index):
     #    'employee_id': from_employee,
     #    'value': emotion['sentiment']['document']['score']
     # })
-
-    employee = employees.find_one({'id': from_employee})
-    # anger = employee['anger']
-    # disgust = employee['disgust']
-    # fear = employee['fear']
-    # joy = employee['joy']
-    # sadness = employee['sadness']
-    print('before update:', employee)
-
-    # employees.update_one(
-        # {'id': from_employee},
-        # {
-            # '$set': {
-                # 'sentiment': emotion['sentiment']['document']['score'],
-                # 'anger': 0.5 * (anger + emotion['emotion']['document']['emotion']['anger']),
-                # 'disgust': 0.5 * (disgust + emotion['emotion']['document']['emotion']['disgust']),
-                # 'fear': 0.5 * (fear + emotion['emotion']['document']['emotion']['fear']),
-                # 'joy': 0.5 * (joy + emotion['emotion']['document']['emotion']['joy']),
-                # 'sadness': 0.5 * (sadness + emotion['emotion']['document']['emotion']['sadness'])
-            # }
-        # }, upsert=True
-    # )
-
-    employees.update_one(
-        {'id': from_employee},
-        {
-            '$set': {
-                'sentiment': emotion['sentiment']['document']['score'],
-                'anger': emotion['emotion']['document']['emotion']['anger'],
-                'disgust': emotion['emotion']['document']['emotion']['disgust'],
-                'fear': emotion['emotion']['document']['emotion']['fear'],
-                'joy': emotion['emotion']['document']['emotion']['joy'],
-                'sadness': emotion['emotion']['document']['emotion']['sadness']
-            }
-        }, upsert=True
-    )
-
-    employee2 = employees.find_one({'id': from_employee})
-    anger = employee2['anger']
-    disgust = employee2['disgust']
-    fear = employee2['fear']
-    sadness = employee['sadness']
-    burnout_risk = 0.25 * (anger + disgust + fear + sadness)
-
-    turnover_risk = calculate_turnover_risk(
-        employees.find_one({'id': from_employee})
-    )
-
-    if sentiment[0] > 0 and turnover_risk > 0.5:
-        turnover_risk = np.random.uniform(0, 0.2)
-
-    employees.update_one(
-        {'id': from_employee},
-        {
-            '$set': {
-                'turnover_risk': turnover_risk,
-                'burnout_risk': burnout_risk
-            }
-        }, upsert=True
-    )
-
-    return {
-        'id': message_id,
-        'from': from_employee,
-        'to': to_employee,
-        'body': text,
-        'emotion': emotion,
-        'created_at': datetime.now()
-    }
-
+    return add_message(from_employee, to_employee, text, emotion)
 
 def generate_random_project_list():
     return random.sample(range(TOTAL_NUM_PROJECTS),
@@ -172,6 +104,8 @@ def insert_employees():
             del r
             gender = employee_data['gender']
 
+            participation = random.randint(10, 80)
+
             employee = {
                 'id': i,
                 'name': employee_data['name'] + ' ' + employee_data['surname'],
@@ -186,7 +120,11 @@ def insert_employees():
                 'years_at_company': random.randint(1, 7),
                 'work_accident': random.choice([0, 1]),
                 'department': random.randint(0, len(DEPARTMENTS) - 1),
-                'promotion_last_5years': random.choice([0, 1])
+                'promotion_last_5years': random.choice([0, 1]),
+                'participation': participation,
+                'participation_total': participation + random.randint(5, 80),
+                'interactions': random.randint(5, 100),
+                'engagement': random.randint(5, 100)
             }
             avatars[gender + "_counter"] += 1
 

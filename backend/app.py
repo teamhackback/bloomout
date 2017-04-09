@@ -13,6 +13,7 @@ from flask import abort, Flask, jsonify, request,\
 from watson import nltk, tone, personality
 from werkzeug import Response
 from flask_socketio import SocketIO
+from employees import add_message
 # import eventlet
 # eventlet.monkey_patch()
 
@@ -82,13 +83,7 @@ def chat():
         }, upsert=True
     )
 
-    messages.insert_one({
-        "emotion": resp,
-        "from": req["from"],
-        "to": req["to"],
-        "body": req["body"],
-        'created_at': datetime.datetime.now()
-        })
+    messages.insert_one(add_message(req["from"], req["to"], req["body"], resp))
     # socketio.emit('new_chat', resp)
     return jsonify(resp)
 

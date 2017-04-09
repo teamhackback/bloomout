@@ -38,8 +38,6 @@ try:
             # del message['_id']
 #
         # message['id'] = counter
-        # message['created_at'] = datetime.datetime.now()
-        # messages.insert_one(message)
         message = generate_message(counter, random.randint(0, 24999))
         messages.insert_one(message)
 
