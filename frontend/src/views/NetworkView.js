@@ -17,6 +17,8 @@ import {
 } from 'd3';
 import _ from 'lodash';
 import {SERVER_API_URL} from '../config';
+import {withRouter} from 'react-router-dom';
+import Measure from 'react-measure'
 
 const d3tip = require("d3-tip");
 
@@ -31,7 +33,7 @@ const emotionColors = {
   "no_emotion": "grey"
 };
 
-export default class NetworkView extends Component {
+class NetworkView extends Component {
 
   constructor(props) {
     super(props);
@@ -39,8 +41,10 @@ export default class NetworkView extends Component {
       dataNodes: [],
       dataLinks: [],
       tickStyle: "animated",
-      width: 800,
-      height: 800,
+      dimensions: {
+        width: 0,
+        height: 0
+      },
       transitionDuration: 100,
       avatarSize: 100,
       avatarSizeHover: 140,
@@ -61,14 +65,20 @@ export default class NetworkView extends Component {
       root: null,
       tickCounter: 0,
       color: scaleOrdinal(schemeCategory20),
-      timer: null
+      timer: null,
+      init: false
     }
   }
 
   componentDidMount() {
-    this.d3.svg = select(this.internal.root).append('svg')
-        .attr('width', this.state.width)
-        .attr('height', this.state.height);
+  }
+
+  _init() {
+    if (this.internal.init)
+      return;
+    this.internal.init = true;
+
+    this.d3.svg = select(this.internal.root);
 
     this.d3.defs = this.d3.svg.append("defs");
     this.d3.gradiants = this.d3.defs.append("g").attr("id", "gradiant_group");
@@ -192,7 +202,7 @@ export default class NetworkView extends Component {
               .force("charge", () => -5000)
               .force("charge", forceManyBody().strength(3))
               .velocityDecay(0.5)
-              .force("center", forceCenter(this.state.width / 2, this.state.height / 2))
+              .force("center", forceCenter(this.state.dimensions.width / 2, this.state.dimensions.height / 2))
               .on("tick", this.ticked);
 
     this.d3.link = this.d3.svg.append("g")
@@ -242,6 +252,7 @@ export default class NetworkView extends Component {
              .on("end", this.dragended))
       .on("click", (d) => {
           console.log("d", d);
+          cl.props.history.push(`/left/profile/${d.id}/basic/right/network`);
       })
       .on( 'mouseenter', function(d) {
         const self = this;
@@ -420,14 +431,24 @@ export default class NetworkView extends Component {
     this.updateGraph();
   }
 
+  onMeasure= (dimensions) => {
+    this.setState({dimensions}, () => {
+      if (this.state.dimensions.width > 0)
+        this._init();
+    });
+  };
+
   render() {
     return (
-      <svg
-        style={{marginTop: 100}}
-        ref={node => this.internal.root = node}
-        width={this.state.width}
-        height={this.state.height}
-      />
+      <Measure onMeasure={this.onMeasure}>
+        <svg
+          style={{marginTop: 100}}
+          ref={node => this.internal.root = node}
+          width="100%"
+          height="90%"
+        />
+    </Measure>
     )
   }
 }
+export default withRouter(NetworkView)

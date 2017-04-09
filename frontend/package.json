@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "custom-react-scripts": "0.0.23",
+    "react-measure": "^1.4.6",
     "socket.io-client": "^1.7.3"
   },
   "scripts": {
