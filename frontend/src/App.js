@@ -15,7 +15,6 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 const routes = [
   {
-
     path: "/overview/intro",
     component: Main.WelcomeLeftScreen
   },

@@ -11,7 +11,15 @@ class ProfileOverviewDetailed extends Component {
     this.state = {
       happiness: 0,
       avg_weekly_hours: 0,
-      num_projects: 0
+      num_projects: 0,
+      joy: 0,
+      anger: 0,
+      sadness: 0,
+      disgust: 0,
+      fear: 0,
+    }
+    this.internal = {
+      timer: null
     }
   }
 
@@ -23,14 +31,18 @@ class ProfileOverviewDetailed extends Component {
       this.setState({
         happiness: Math.round(data['satisfaction'] * 100),
         avg_weekly_hours: Math.round(data['avg_monthly_hours'] / 4),
-        num_projects: data['number_project'] 
+        num_projects: data['number_project'], 
+        joy: Math.round(data['joy'] * 100),
+        anger: Math.round(data['anger'] * 100),
+        sadness: Math.round(data['sadness'] * 100),
+        disgust: Math.round(data['disgust'] * 100),
+        fear: Math.round(data['fear'] * 100)
       })
     });
   };
 
   componentDidMount() {
-
-    this.internal.timer = setInterval(this.loadData, 500);
+    this.internal.timer = setInterval(this.loadData, 1500);
   }
 
   componentWillUnmount () {
@@ -57,19 +69,19 @@ class ProfileOverviewDetailed extends Component {
           },
           {
             name: 'Disgust',
-            renderContent: () => <ProgressBar progress="20" colored reverseColor />
+            renderContent: () => <ProgressBar progress={this.state.disgust} colored reverseColor />
           },
           {
             name: 'Fear',
-            renderContent: () => <ProgressBar progress="78" colored reverseColor />
+            renderContent: () => <ProgressBar progress={this.state.fear} colored reverseColor />
           },
           {
             name: 'Sadness',
-            renderContent: () => <ProgressBar progress="61" colored reverseColor />
+            renderContent: () => <ProgressBar progress={this.state.sadness} colored reverseColor />
           },
           {
             name: 'Joy',
-            renderContent: () => <ProgressBar progress="8" colored reverseColor />
+            renderContent: () => <ProgressBar progress={this.state.joy} colored reverseColor />
           },
           {
             name: 'Participation',

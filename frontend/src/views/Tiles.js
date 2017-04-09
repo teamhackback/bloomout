@@ -9,7 +9,6 @@ class Tiles extends Component {
     const renderIconElement = (src) => (
       <img src={src} role="presentation" className="icon"/>
     );
-    console.log(this.context);
     return (
       <div className={`tiles ${this.props.whiteTheme ? "white-theme" : "dark-theme"}`}>
         {this.props.tiles.map((tile, ind) => (
