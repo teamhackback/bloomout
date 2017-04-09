@@ -58,9 +58,9 @@ class ProfileOverviewBasic extends Component {
         <div className="profile-stats-row" style={{
             width: "100%", display: "flex", justifyContent: "center", marginBottom: "1em", paddingBottom: '1.5em', backgroundColor: 'rgba(0, 0, 0, 0.5)'
           }}>
-          <div><div className="tile-main-text">{this.state.happiness + '%'}</div><div>Happiness</div></div>
-          <div><div className="tile-main-text">{this.state.turnover_risk + '%'}</div><div>Turnover risk</div> </div>
-          <div><div className="tile-main-text">{this.state.burnout_risk + '%'}</div><div>Risk of burnout</div> </div>
+          <div><div className="tile-main-text">{(this.state.happiness || 0) + '%'}</div><div>Happiness</div></div>
+          <div><div className="tile-main-text">{(this.state.turnover_risk || 0) + '%'}</div><div>Turnover risk</div> </div>
+          <div><div className="tile-main-text">{(this.state.burnout_risk || 0)+ '%'}</div><div>Risk of burnout</div> </div>
         </div>
       </div>
     );
