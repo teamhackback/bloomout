@@ -3,6 +3,12 @@ import { SERVER_URL } from '../config';
 import peopleStore from '../PersonStore';
 
 import ProgressBar from './ProgressBar';
+import {LeftLinkTo, RightLinkTo, getRightPart} from '../LinkTo';
+import {
+  Link
+} from 'react-router-dom';
+
+import {Button, BackNavBar} from './Buttons';
 
 const renderPeopleListItem = (ind, va, vb, vc) => (
   <div className="person-combo animated fadeInDown">
@@ -39,7 +45,6 @@ class ProfileOverviewBasic extends Component {
     .then(response => response.json())
     .then(data => {
       this.update(data);
-      console.log(this.state);
     });
   };
 
@@ -70,6 +75,11 @@ class ProfileOverviewBasic extends Component {
     const id = this.props.match.params.id;
     return (
       <div className="ProfileOverviewBasic dark-theme animated fadeIn">
+        <div>
+          <Link to={"/left/profile/" + id + "/detailed/right" + getRightPart()}>
+            <Button>Flip tile</Button>
+          </Link>
+        </div>
         {renderPeopleListItem(id, this.state.happiness, this.state.turnover_risk, this.state.burnout_risk) }
         <span style={{ fontSize: '2.5em', fontWeight: 'bold', display: 'inline-block', marginBottom: '2em', fontFamily: 'Montserrat, sans-serif'}}>{this.state.name}</span>
         <div className="profile-stats-row" style={{

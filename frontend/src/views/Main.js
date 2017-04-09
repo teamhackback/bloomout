@@ -9,15 +9,7 @@ import Images from '../assets';
 import NetworkView from './NetworkView.js'
 import {RightLinkTo} from '../LinkTo';
 
-const Button = (props) => (
-  <a className="button" href="#" {...props}>{props.children}<span></span></a>
-);
-
-const BackNavBar = (props) => (
-  <div className="back-navbar">
-    <a href="#" onClick={() => window.history.back() }>&larr; Back</a>
-  </div>
-);
+import {Button, BackNavBar} from './Buttons';
 
 const WelcomeLeftScreen = (props) => (
 <div className="WelcomeLeftScreen animated fadeIn">
