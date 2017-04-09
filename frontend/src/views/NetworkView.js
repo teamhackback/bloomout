@@ -97,7 +97,7 @@ class NetworkView extends Component {
 
     this.d3.tip = d3tip()
       .attr('class', network['d3-tip'])
-      .offset([-9, -5])
+      .offset([-20, -5])
       .html(function(d) {
         return `<span class="${network.nodetext}">${d.label}<span>`;
       })
@@ -386,7 +386,7 @@ class NetworkView extends Component {
         }, 0);
         return Math.max(acc, f);
       }, 0);
-      const scaleMsgs = scaleLinear().domain([1, maxMsgs + 1]).range([3, 20]);
+      const scaleMsgs = scaleLinear().domain([1, maxMsgs + 1]).range([4, 20]);
       const dataLinks = []
       _.each(data.graph, (connections, personId)  => {
         _.each(connections, (connection, connectionId) => {
