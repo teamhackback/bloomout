@@ -4,7 +4,7 @@ import { SERVER_URL } from '../config';
 import ProgressBar from './ProgressBar';
 
 const renderPeopleListItem = (ind, va, vb, vc) => (
-  <div className="person-combo">
+  <div className="person-combo animated fadeInDown">
     <ProgressBar progress={vc || 5 + Math.floor(Math.random() * 80)} noText colored />
     <ProgressBar progress={vb || 5 + Math.floor(Math.random() * 50)} noText colored reverseColor />
     <ProgressBar progress={va || 5 + Math.floor(Math.random() * 30)} noText colored reverseColor />

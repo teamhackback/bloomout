@@ -60,7 +60,7 @@ class ProgressBar extends Component {
   render() {
     return (
       <div id={this.id}
-        className="progressBar"
+        className={"progressBar " + this.props.additionalClass || ""}
         style={{ }}>
       </div>
     );

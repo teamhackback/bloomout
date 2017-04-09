@@ -2558,7 +2558,7 @@ fb-watchman@^1.8.0, fb-watchman@^1.9.0:
   dependencies:
     bser "1.0.2"
 
-fbjs@^0.8.9:
+fbjs@^0.8.4, fbjs@^0.8.9:
   version "0.8.12"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
   dependencies:
@@ -2760,6 +2760,10 @@ get-caller-file@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.2.tgz#f702e63127e7e231c160a80c1554acb70d5047e5"
 
+get-node-dimensions@^1.2.0:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/get-node-dimensions/-/get-node-dimensions-1.2.2.tgz#7a71e8624cf9e1ab74599bb05b7e5116e995e45b"
+
 get-stdin@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-4.0.1.tgz#b968c6b0a04384324902e8bf1a5df32579a450fe"
@@ -2923,6 +2927,10 @@ history@^4.5.1, history@^4.6.0:
 hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
+
+hoist-non-react-statics@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
@@ -4014,6 +4022,16 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
+mobx-react@^4.1.5:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-4.1.5.tgz#75cf4dbffc91b9cb23d56c060dfd8d2ca52450dc"
+  dependencies:
+    hoist-non-react-statics "^1.2.0"
+
+mobx@^3.1.9:
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-3.1.9.tgz#ed4af9d874ff6032c7af91fc1b87d9d33122a557"
+
 ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
@@ -4876,6 +4894,13 @@ react:
     object-assign "^4.1.0"
     prop-types "^15.5.2"
 
+react-addons-css-transition-group@^15.5.2:
+  version "15.5.2"
+  resolved "https://registry.yarnpkg.com/react-addons-css-transition-group/-/react-addons-css-transition-group-15.5.2.tgz#ea7e0a9f0e1c27ca426da4efd3559915bd42ead2"
+  dependencies:
+    fbjs "^0.8.4"
+    object-assign "^4.1.0"
+
 react-dev-utils@^0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-0.4.2.tgz#ba6fae581fe945a2fc402e9b27c71fda4f62f6a1"
@@ -4896,6 +4921,13 @@ react-dom:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "~15.5.0"
+
+react-measure@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/react-measure/-/react-measure-1.4.6.tgz#db3f91bf819922933cc9af34664d098d3242a955"
+  dependencies:
+    get-node-dimensions "^1.2.0"
+    resize-observer-polyfill "^1.4.1"
 
 react-router-dom@^4.0.0:
   version "4.0.0"
@@ -5130,6 +5162,10 @@ require-uncached@^1.0.2:
 requires-port@1.0.x, requires-port@1.x.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
+
+resize-observer-polyfill@^1.4.1:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.4.2.tgz#a37198e6209e888acb1532a9968e06d38b6788e5"
 
 resolve-from@^1.0.0:
   version "1.0.1"

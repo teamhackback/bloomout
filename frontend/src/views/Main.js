@@ -36,7 +36,7 @@ const WelcomeLeftScreen = (props) => (
 
 const WelcomeOverviewBasic = () => (
   <div className="WelcomeOverviewBasic dark-theme animated fadeIn">
-    <ProgressBar progress="63" infoText="Overall risk" />
+    <ProgressBar progress="63" infoText="Overall risk" additionalClass="animated fadeInRight" />
   </div>
 );
 
@@ -83,7 +83,7 @@ const WelcomeOverviewDetailed = () => (
 
 const EmployeeOverviewBasic = () => (
   <div className="EmployeeOverviewBasic dark-theme animated fadeIn">
-    <ProgressBar progress="42" infoText="Employee risks" />
+    <ProgressBar progress="42" infoText="Employee risks" additionalClass="animated fadeInUp" />
   </div>
 );
 
