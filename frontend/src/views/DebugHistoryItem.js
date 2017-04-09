@@ -33,12 +33,11 @@ function Sender(props) {
   const imgSize = 40;
   return (
     <div style={{"display": "inline-block", "padding": 10}}>
-      <img style={{height: imgSize, width: imgSize}} src={SERVER_API_URL + "/images/" + person.id} />
-      <div style={{"fontSize": "24px"}}>
-        {name}
+      <div className="avatar-wrapper" style={{height: imgSize, width: imgSize, display: "inline-block"}}>
+        <img src={SERVER_API_URL + "/images/" + person.id} style={{height: imgSize, width: imgSize}} />
       </div>
-      <div style={{"fontSize": "12px", "color": "grey"}}>
-        {props.text}
+      <div style={{"fontSize": "24px", display: "inline-block", "verticalAlign": "top", "marginTop": 2, "marginLeft": 10}}>
+        {name}
       </div>
     </div>
   )
@@ -130,6 +129,9 @@ export default class DebugHistoryItem extends Component {
       </div>
       <div>
         <Sender text="From" person={item.from} />
+        <span style={{"fontSize": 70, "verticalAlign": "top", "display": "inline-block", "height": 20, "marginTop": -30}}>
+          →
+        </span>
         <Sender text="To" person={item.to} />
       </div>
 

@@ -245,3 +245,15 @@ a.button:hover {
   transform: translate(0%);
   transition: opacity 250ms ease-in;
 }
+.avatar-wrapper {
+  overflow: hidden;
+  border-radius:50%;
+  position: relative;
+}
+
+.avatar-wrapper img {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%)
+}
