@@ -442,7 +442,6 @@ class NetworkView extends Component {
     return (
       <Measure onMeasure={this.onMeasure}>
         <svg
-          style={{marginTop: 100}}
           ref={node => this.internal.root = node}
           width="100%"
           height="90%"
