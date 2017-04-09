@@ -8,6 +8,25 @@ import FlipMove from 'react-flip-move';
 
 @observer
 export default class DebugView extends Component {
+  constructor(props) {
+    super(props);
+    this.internal = {
+      id: null
+    };
+    this.loadData();
+  }
+  componentDidMount() {
+    this.internal.timer = setInterval(this.loadData, 500);
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.internal.timer);
+  };
+
+  loadData = () => {
+    historyStore.update();
+  };
+
   render() {
     return (
     <div className="debugview">
