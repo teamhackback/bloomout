@@ -35,8 +35,8 @@ try:
         if '_id' in message:
             del message['_id']
         message['id'] = counter
-        messages.insert_one(message)
         message['created_at'] = datetime.datetime.now()
+        messages.insert_one(message)
         socketio.emit('new_chat', message)
         print('inserted message: ', counter)
 
