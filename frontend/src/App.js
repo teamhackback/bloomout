@@ -109,7 +109,7 @@ class SplitScreen extends Component {
           display: "flex",
           justifyContent: "center",
           alignItems: "center"
-        }}><img src={Images.introText} role="presentation" /></div>
+        }}><img src={Images.introText} role="presentation" style={{ width: "20%" }}/></div>
         : ""
       }
       <Sidebar />
