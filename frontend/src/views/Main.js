@@ -7,7 +7,7 @@ import ProgressBar from './ProgressBar';
 import SplitLayout from './SplitLayout';
 import Images from '../assets';
 import NetworkView from './NetworkView.js'
-import LinkTo from '../LinkTo';
+import {RightLinkTo} from '../LinkTo';
 
 const Button = (props) => (
   <a className="button" href="#" {...props}>{props.children}<span></span></a>
@@ -28,9 +28,9 @@ const WelcomeLeftScreen = (props) => (
     Receive automated feedback on your employee's work satisfaction and their engagement.
     Analyze a combination of employee statistics to prevent burnout before it happens.
   </p>
-  <LinkTo to="/overview/detailed">
+  <RightLinkTo to="/overview/detailed">
     <Button>Show me more</Button>
-  </LinkTo>
+  </RightLinkTo>
 </div>
 );
 
@@ -42,30 +42,36 @@ const WelcomeOverviewBasic = () => (
 
 const WelcomeOverviewDetailed = () => (
   <div className="WelcomeOverviewDetailed animated fadeIn">
-    <Tiles link="/employee-risks" tiles={[
+    <Tiles tiles={[
       {
         name: 'Employee risks',
         renderContent: () => <ProgressBar progress="42" colored reverseColor />,
+        link: "/left/employees/basic/right/employees/detailed",
       },
       {
         name: 'Project risks',
-        renderContent: () => <ProgressBar progress="14" colored reverseColor />
+        renderContent: () => <ProgressBar progress="14" colored reverseColor />,
+        link: "/left/employees/basic/right/employees/detailed",
       },
       {
         name: 'Client risks',
-        renderContent: () => <ProgressBar progress="20" colored reverseColor />
+        renderContent: () => <ProgressBar progress="20" colored reverseColor />,
+        link: "/left/employees/basic/right/employees/detailed",
       },
       {
         name: 'Interaction quality',
-        renderContent: () => <ProgressBar progress="62" colored />
+        renderContent: () => <ProgressBar progress="62" colored />,
+        link: "/left/employees/basic/right/employees/detailed",
       },
       {
         name: 'Company mood',
-        renderContent: () => <ProgressBar progress="28" colored />
+        renderContent: () => <ProgressBar progress="28" colored />,
+        link: "/left/employees/basic/right/employees/detailed",
       },
       {
         name: 'Black box score',
-        renderContent: () => <div className="tile-main-text">12p.</div>
+        renderContent: () => <div className="tile-main-text">12p.</div>,
+        link: "/left/employees/basic/right/employees/detailed",
       }
     ].map((t, ind) => {
       t.icon = Images.icons.artboards[ind];
@@ -74,31 +80,6 @@ const WelcomeOverviewDetailed = () => (
   </div>
 );
 
-
-class Intro extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      overviewShown: false
-    };
-    this.showOverview = this.showOverview.bind(this);
-  }
-
-  showOverview() {
-    this.setState({ overviewShown: true });
-  }
-
-  render() {
-    return (
-      <SplitLayout
-        left={ this.state.overviewShown ?
-          <WelcomeOverviewDetailed /> : <WelcomeLeftScreen showOverview={this.showOverview}/>
-        }
-        right={<WelcomeOverviewBasic />}
-      />
-    );
-  }
-}
 
 const EmployeeOverviewBasic = () => (
   <div className="EmployeeOverviewBasic dark-theme animated fadeIn">
@@ -149,19 +130,6 @@ const EmployeeOverviewDetailed = () => (
   </div>
 );
 
-class Employee extends Component {
-  render() {
-    return (
-      <SplitLayout
-        left={<EmployeeOverviewBasic />}
-        right={<EmployeeOverviewDetailed />}
-      >
-      <BackNavBar />
-      </SplitLayout>
-    );
-  }
-}
-
 const rands=[15,63,23,30,16,42,21,51,8,35,73,46,24,48,41,      32,42,19,       25,27,5,56,47,15,43,43,10,62,39,35,21,30,28,14,18,30,27,10,34,52,26,28,9,39,54,37,10,10,15,31,32,37,20,51,16,39,62,44,9,56,53,48,9,60,26,5,33,35,38,9,56,13,34,22,45,23];
 
 const renderPeopleListItem = (ind, va, vb, vc) => (
@@ -179,52 +147,12 @@ const PeopleOverviewBasic = () => (
   </div>
 );
 
-class People extends Component {
-  render() {
-    return (
-      <SplitLayout
-        left={<PeopleOverviewBasic />}
-        right={<PeopleListView />}
-      >
-      <BackNavBar />
-      </SplitLayout>
-    );
-  }
-}
-
-
-class Profile extends Component {
-  render() {
-    return (
-      <SplitLayout
-        left={<ProfileOverviewBasic id={this.props.match.params.id} />}
-        right={<ProfileOverviewDetailed id={this.props.match.params.id} />}
-      >
-      <BackNavBar />
-      </SplitLayout>
-    );
-  }
-}
-
-class Network extends Component {
-  render() {
-    return (
-      <SplitLayout
-        left={<EmployeeOverviewBasic />}
-        right={<NetworkView />}
-      />
-    );
-  }
-}
-
 const Main = {
-  Intro,
-  Employee,
-  People,
-  Profile,
-  Network,
+  NetworkView,
   PeopleOverviewBasic,
   PeopleListView,
+  ProfileOverviewBasic,
+  ProfileOverviewDetailed,
   WelcomeLeftScreen,
   WelcomeOverviewBasic,
   WelcomeOverviewDetailed,

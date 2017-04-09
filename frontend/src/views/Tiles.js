@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {
+  history,
+} from 'react-router';
 
 class Tiles extends Component {
   render() {
@@ -14,7 +17,7 @@ class Tiles extends Component {
             className={`tile animated fadeIn ${tile.tileClass || ""}`}
             onClick={() => {
               let link = tile.id !== undefined ? this.props.link + "/" + tile.id : this.props.link;
-              window.location = link;
+              history.state.push(tile.link || link);
             }}
             style={{
               background: this.props.whiteTheme ? "#fff" : '#333F49',

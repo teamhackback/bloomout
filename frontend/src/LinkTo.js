@@ -19,10 +19,31 @@ export const getRightPart = function() {
     return "/" + found[2];
 }
 
-export default class CustomLinkTo extends Component {
+export class RightLinkTo extends Component {
   render() {
-    const left = getRightPart();
-    const to = `/left${left}/right${this.props.to}`;
+    const to = `/left${getRightPart()}/right${this.props.to}`;
+    return (
+      <Link to={to}>
+        { this.props.children }
+      </Link>
+    );
+  }
+};
+
+export class LeftLinkTo extends Component {
+  render() {
+    const to = `/left${this.props.to}/right${getLeftPart()}`;
+    return (
+      <Link to={to}>
+        { this.props.children }
+      </Link>
+    );
+  }
+};
+
+export class LinkTo extends Component {
+  render() {
+    const to = `/left${this.props.left}/right/${this.props.right}`;
     return (
       <Link to={to}>
         { this.props.children }

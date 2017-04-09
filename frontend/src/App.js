@@ -31,11 +31,19 @@ const routes = [
   },
   {
     path: "/employees/detailed",
-    component: Main.PeopleOverviewBasic
+    component: Main.PeopleOverviewListView
+  },
+  {
+    path: "/profile/:id/basic",
+    component: Main.ProfileOverviewBasic
+  },
+  {
+    path: "/profile/:id/detailed",
+    component: Main.ProfileOverviewDetailed
   },
   {
     path: "/network",
-    component: Main.Network
+    component: Main.NetworkView
   },
 ];
 
