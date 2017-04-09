@@ -30,7 +30,7 @@ const emotionColors = {
   "fear": "red",
   "joy": "green",
   "sadness": "red",
-  "no_emotion": "grey"
+  "no_emotion": "white"
 };
 
 class NetworkView extends Component {
@@ -444,7 +444,8 @@ class NetworkView extends Component {
         <svg
           ref={node => this.internal.root = node}
           width="100%"
-          height="90%"
+          height="100%"
+          style={{"background": "linear-gradient(to bottom, rgba(148,148,148,1) 0%, rgba(135,135,135,1) 100%)"}}
         />
     </Measure>
     )
