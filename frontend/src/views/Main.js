@@ -3,6 +3,7 @@ import Tiles from './Tiles';
 import ProgressBar from './ProgressBar';
 import SplitLayout from './SplitLayout';
 import Images from '../assets';
+import NetworkView from './NetworkView.js'
 
 const Button = (props) => (
   <a className="button" href="#" {...props}>{props.children}<span></span></a>
@@ -91,7 +92,7 @@ class Intro extends Component {
       />
     );
   }
-} 
+}
 
 const EmployeeOverviewBasic = () => (
   <div className="EmployeeOverviewBasic dark-theme animated fadeIn">
@@ -316,11 +317,23 @@ class Profile extends Component {
   }
 }
 
+class Network extends Component {
+  render() {
+    return (
+      <SplitLayout
+        left={<EmployeeOverviewBasic />}
+        right={<NetworkView />}
+      />
+    );
+  }
+}
+
 const Main = {
   Intro,
   Employee,
   People,
-  Profile
+  Profile,
+  Network,
 }
 
 export default Main;

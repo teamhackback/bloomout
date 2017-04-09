@@ -14,13 +14,14 @@ import {
   scaleLinear,
   schemeCategory20,
   interpolate,
+  randomUniform,
 } from 'd3';
 import _ from 'lodash';
 import {SERVER_API_URL} from '../config';
 
 const d3tip = require("d3-tip");
 
-import '../assets/css/network.css';
+import network from '../assets/css/network.css';
 
 const emotionColors = {
   "anger": "red",
@@ -41,7 +42,11 @@ export default class NetworkView extends Component {
       tickStyle: "animated",
       width: 800,
       height: 800,
-      transitionDuration: 1500,
+      transitionDuration: 100,
+      avatarSize: 100,
+      avatarSizeHover: 140,
+      strikeSize: 7,
+      strikeSizeHover: 10,
     };
     this.d3 = {
       link: null,
@@ -82,10 +87,10 @@ export default class NetworkView extends Component {
       .attr("operator", "xor")
 
     this.d3.tip = d3tip()
-      .attr('class', 'd3-tip')
-      .offset([-10, -5])
+      .attr('class', network['d3-tip'])
+      .offset([-7, -5])
       .html(function(d) {
-        return `<span class="nodetext">${d.label}<span>`;
+        return `<span class="${network.nodetext}">${d.label}<span>`;
       })
     this.d3.svg.call(this.d3.tip);
     this.drawInitial();
@@ -181,12 +186,13 @@ export default class NetworkView extends Component {
 
   drawInitial = () => {
     this.d3.simulation = forceSimulation()
-              .force("link", forceLink().id(function(d) { return d.id }).distance(250).iterations(16))
-              .force("collide",forceCollide( function(d){return d.r + 8 }).iterations(16) )
-              //.force("charge", forceManyBody())
+      .force("link", forceLink().id(function(d) { return d.id }).distance((d) => d.distance).iterations(16))
+              //.force("collide",forceCollide( function(d){return d.r + 8 }).iterations(16) )
+              .force("collide",forceCollide( function(d){return d.r + 60 }).iterations(16) )
+              .force("charge", forceManyBody())
               .force("charge", () => -5000)
-              //.force("charge", forceManyBody().strength(0.3))
-              .velocityDecay(0.9)
+              .force("charge", forceManyBody().strength(3))
+              .velocityDecay(0.5)
               .force("center", forceCenter(this.state.width / 2, this.state.height / 2))
               .on("tick", this.ticked);
 
@@ -195,7 +201,7 @@ export default class NetworkView extends Component {
               .selectAll("line");
 
     this.d3.node = this.d3.svg.append("g")
-         .attr("class", "nodes")
+         .attr("class", network.nodes)
          .selectAll("circle");
 
     this.d3.simulation
@@ -230,7 +236,7 @@ export default class NetworkView extends Component {
     this.d3.node = this.d3.node
       .enter()
       .append("svg:g")
-      .attr("class", "node")
+      .attr("class", network.node)
       .call(drag()
              .on("start", this.dragstarted)
              .on("drag", this.dragged)
@@ -240,18 +246,17 @@ export default class NetworkView extends Component {
       })
       .on( 'mouseenter', function(d) {
         const self = this;
+        const rCircle = cl.state.avatarSizeHover / 2 + cl.state.strikeSizeHover;
         select( this.childNodes[0] )
           .transition()
-            .attr("cx", function(d) { return -10;})
-            .attr("cy", function(d) { return -10;})
-          .attr("r", function(d) { return 55;})
+          .attr("r", function(d) { return rCircle;})
 
            select( this.childNodes[1] )
             .transition()
-            .attr("x", function(d) { return -60;})
-            .attr("y", function(d) { return -60;})
-            .attr("height", 100)
-            .attr("width", 100)
+          .attr("x", function(d) { return -cl.state.avatarSizeHover / 2;})
+          .attr("y", function(d) { return -cl.state.avatarSizeHover / 2;})
+           .attr("height", cl.state.avatarSizeHover)
+           .attr("width", cl.state.avatarSizeHover)
           .on("end", function(){
             cl.d3.tip.show.call(self, d, self)
           });
@@ -259,46 +264,53 @@ export default class NetworkView extends Component {
       .on( 'mouseleave', function (d) {
         select( this.childNodes[0] )
           .transition()
-          .attr("r", function(d) { return 27;})
+          .attr("r", function(d) { return cl.state.avatarSize / 2 + cl.state.strikeSize;})
             .attr("cx", function(d) { return 0;})
             .attr("cy", function(d) { return 0;})
            select( this.childNodes[1] )
              .transition()
-             .attr("x", function(d) { return -25;})
-             .attr("y", function(d) { return -25;})
-             .attr("height", 50)
-             .attr("width", 50)
+             .attr("x", function(d) { return -cl.state.avatarSize / 2;})
+             .attr("y", function(d) { return -cl.state.avatarSize / 2;})
+           .attr("height", cl.state.avatarSize)
+           .attr("width", cl.state.avatarSize)
             .on("end", function(){cl.d3.tip.hide(d)});
       })
       .merge(this.d3.node);
 
-    // circle
     this.d3.node
-      .append("circle")
-      .attr("fill", "white")
-      .call((node) => {
-          node.transition()
-          .duration(this.state.transitionDuration)
-          .ease(transitionType)
-          .attr("r", 27); })
+    .each(function(d) {
+      const sel = select(this);
+        if(this.childNodes.length === 0)
+        {
+          sel
+          .append("circle")
+          .attr("fill", "white")
+          .call((node) => {
+              node.transition()
+              .duration(cl.state.transitionDuration)
+              .ease(transitionType)
+              .attr("r", function(d) { return cl.state.avatarSize / 2 + cl.state.strikeSize;});
+          })
+          sel.append("svg:image")
+          .attr("xlink:href",  function(d) { return d.img;})
+          .attr("x", function(d) { return -cl.state.avatarSize / 2;})
+          .attr("y", function(d) { return -cl.state.avatarSize / 2;})
+          .attr("height", 100)
+          //.attr("clip-path", "url(#avatar_clip)")
+          .attr("height", cl.state.avatarSize)
+          .attr("width", cl.state.avatarSize)
+          .attr("stroke-width", 2)
+          .attr("stroke", "white")
+        }
+    });
 
 
     // images
-    this.d3.node.append("svg:image")
-          .attr("xlink:href",  function(d) { return d.img;})
-          .attr("x", function(d) { return -25;})
-          .attr("y", function(d) { return -25;})
-          .attr("height", 50)
-          //.attr("clip-path", "url(#avatar_clip)")
-          .attr("width", 50)
-          .attr("stroke-width", 2)
-          .attr("stroke", "white");
-
     this.d3.node.transition()
       .duration(800)
       .delay(function(d, i) { return i * 5; })
       .attrTween("radius", function(d) {
-        var i = interpolate(0, d.r);
+        var i = interpolate(0, cl.state.avatarSize / 2 + 5);
         return function(t) { return d.radius = i(t); };
       });
 
@@ -338,7 +350,7 @@ export default class NetworkView extends Component {
     // Update and restart the simulation.
     this.d3.simulation.nodes(this.state.dataNodes);
     this.d3.simulation.force("link").links(this.state.dataLinks);
-    this.d3.simulation.alpha(1).restart();
+    this.d3.simulation.alpha(1.2).restart();
   };
 
   _nodesMap = (e, i) => {
@@ -364,7 +376,7 @@ export default class NetworkView extends Component {
         }, 0);
         return Math.max(acc, f);
       }, 0);
-      const scaleMsgs = scaleLinear().domain([1, maxMsgs + 1]).range([1, 15]);
+      const scaleMsgs = scaleLinear().domain([1, maxMsgs + 1]).range([3, 20]);
       const dataLinks = []
       _.each(data.graph, (connections, personId)  => {
         _.each(connections, (connection, connectionId) => {
@@ -381,7 +393,9 @@ export default class NetworkView extends Component {
             target: targetId,
             sourceColor: sourceColor,
             targetColor: targetColor,
-            width: scaledWidth
+            width: scaledWidth,
+            //distance: randomUniform(400, 550)()
+            distance: 500
           });
         });
       });
@@ -410,6 +424,7 @@ export default class NetworkView extends Component {
   render() {
     return (
       <svg
+        style={{marginTop: 100}}
         ref={node => this.internal.root = node}
         width={this.state.width}
         height={this.state.height}
