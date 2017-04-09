@@ -26,7 +26,7 @@ messages.drop()
 try:
     counter = 0
     while True:
-        if counter == 20:
+        if counter == 8:
             print('dropping previous messages')
             counter = 0
             messages.drop()
