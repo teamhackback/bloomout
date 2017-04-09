@@ -14,7 +14,6 @@ import {
   scaleLinear,
   schemeCategory20,
   interpolate,
-  randomUniform,
 } from 'd3';
 import _ from 'lodash';
 import {SERVER_API_URL} from '../config';
@@ -88,7 +87,7 @@ export default class NetworkView extends Component {
 
     this.d3.tip = d3tip()
       .attr('class', network['d3-tip'])
-      .offset([-7, -5])
+      .offset([-9, -5])
       .html(function(d) {
         return `<span class="${network.nodetext}">${d.label}<span>`;
       })

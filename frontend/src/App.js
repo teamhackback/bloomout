@@ -1,12 +1,65 @@
 import React, {Component} from 'react';
 import {
   BrowserRouter as Router,
-  Route
+  Switch,
+  Route,
+  Redirect
 } from 'react-router-dom';
 
 import Main from './views/Main.js'
 import EmailForm from './views/EmailForm.js'
 import DebugView from './views/DebugView.js'
+import Styles from './views/SplitLayout.css';
+
+const routes = [
+  {
+
+    path: "/overview/intro",
+    component: Main.WelcomeLeftScreen
+  },
+  {
+    path: "/overview/basic",
+    component: Main.WelcomeOverviewBasic
+  },
+  {
+    path: "/overview/detailed",
+    component: Main.WelcomeOverviewDetailed
+  },
+  {
+    path: "/employees/basic",
+    component: Main.PeopleOverviewBasic
+  },
+  {
+    path: "/employees/detailed",
+    component: Main.PeopleOverviewBasic
+  },
+  {
+    path: "/network",
+    component: Main.Network
+  },
+];
+
+routes.forEach((e, i) => {
+  e.id = i;
+});
+
+
+const SplitScreen = () => {
+  return (
+    <div className={Styles.SplitLayout}>
+        <div className={Styles.SplitPane}>
+        <Switch>
+          { routes.map(route => <Route key={route.id} path={"/left" + route.path} component={route.component} /> )}
+        </Switch>
+      </div>
+      <div className={Styles.SplitPane}>
+        <Switch>
+          { routes.map(route => <Route key={route.id} path={"/left/(.*)/right" + route.path} component={route.component} /> )}
+        </Switch>
+      </div>
+    </div>
+  )
+};
 
 class App extends Component {
   render() {
@@ -14,13 +67,13 @@ class App extends Component {
       <Router>
         <div className="App">
           <div className="App-header">
-            <Route exact path="/" component={Main.Intro} />
-            <Route path="/employee-risks" component={Main.Employee} />
-            <Route path="/people" component={Main.People} />
             <Route path="/network" component={Main.Network} />
             <Route path="/form" component={EmailForm} />
             <Route path="/debug" component={DebugView} />
-            <Route path="/profile/:id" component={Main.Profile} />
+            <Route path="/" component={SplitScreen} />
+            <Route path="/">
+              <Redirect to="/left/overview/intro/right/overview/basic" />
+            </Route>
           </div>
         </div>
       </Router>

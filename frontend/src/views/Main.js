@@ -7,6 +7,7 @@ import ProgressBar from './ProgressBar';
 import SplitLayout from './SplitLayout';
 import Images from '../assets';
 import NetworkView from './NetworkView.js'
+import LinkTo from '../LinkTo';
 
 const Button = (props) => (
   <a className="button" href="#" {...props}>{props.children}<span></span></a>
@@ -27,7 +28,9 @@ const WelcomeLeftScreen = (props) => (
     Receive automated feedback on your employee's work satisfaction and their engagement.
     Analyze a combination of employee statistics to prevent burnout before it happens.
   </p>
-  <Button onClick={props.showOverview}>Show me more</Button>
+  <LinkTo to="/overview/detailed">
+    <Button>Show me more</Button>
+  </LinkTo>
 </div>
 );
 
@@ -220,6 +223,13 @@ const Main = {
   People,
   Profile,
   Network,
+  PeopleOverviewBasic,
+  PeopleListView,
+  WelcomeLeftScreen,
+  WelcomeOverviewBasic,
+  WelcomeOverviewDetailed,
+  EmployeeOverviewBasic,
+  EmployeeOverviewDetailed,
 }
 
 export default Main;
