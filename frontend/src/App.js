@@ -70,7 +70,8 @@ class SplitScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstVisit: true
+      firstVisit: this.props.location.pathname === "/" ||
+      this.props.location.pathname === "/left/overview/intro/right/overview/basic"
     };
     this.onWelcomed = this.onWelcomed.bind(this);
   }
