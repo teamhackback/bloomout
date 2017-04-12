@@ -38,8 +38,6 @@ class NetworkView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataNodes: [],
-      dataLinks: [],
       tickStyle: "animated",
       dimensions: {
         width: 0,
@@ -58,7 +56,9 @@ class NetworkView extends Component {
       gradiants: null,
       defs: null,
       svg: null,
-      tip: null
+      tip: null,
+      dataNodes: [],
+      dataLinks: [],
     };
     this.internal = {
       dataNodesById: {},
@@ -114,11 +114,11 @@ class NetworkView extends Component {
   strokeEdge = (d) => {
     let source, target
     if (d.source === parseInt(d.source, 10))
-      source = this.state.dataNodes[d.source];
+      source = this.d3.dataNodes[d.source];
     else
       source = d.source;
     if (d.target === parseInt(d.target, 10))
-      target = this.state.dataNodes[d.target];
+      target = this.d3.dataNodes[d.target];
     else
       target = d.target;
 
@@ -166,6 +166,7 @@ class NetworkView extends Component {
   };
 
   ticked = () => {
+    //console.log(this.d3.simulation.alpha());
     if (this.state.tickStyle === "direct") {
       this.d3.link
           .attr("x1", function(d) { return d.source.x; })
@@ -195,13 +196,13 @@ class NetworkView extends Component {
 
   drawInitial = () => {
     this.d3.simulation = forceSimulation()
-      .force("link", forceLink().id(function(d) { return d.id }).distance((d) => d.distance).iterations(16))
+      .force("link", forceLink().id(function(d) { return d.id }).distance((d) => d.distance).iterations(1))
               //.force("collide",forceCollide( function(d){return d.r + 8 }).iterations(16) )
-              .force("collide",forceCollide( function(d){return d.r + 60 }).iterations(16) )
-              .force("charge", forceManyBody())
+              .force("collide",forceCollide( function(d){return d.r + 60 }).iterations(2) )
+              //.force("charge", forceManyBody())
               .force("charge", () => -5000)
               .force("charge", forceManyBody().strength(3))
-              .velocityDecay(0.5)
+              .velocityDecay(0.7)
               .force("center", forceCenter(this.state.dimensions.width / 2, this.state.dimensions.height / 2))
               .on("tick", this.ticked);
 
@@ -214,7 +215,7 @@ class NetworkView extends Component {
          .selectAll("circle");
 
     this.d3.simulation
-         .nodes(this.state.dataNodes)
+         .nodes(this.d3.dataNodes)
   };
 
   getColorByEmotion = (obj) => {
@@ -226,13 +227,13 @@ class NetworkView extends Component {
   };
 
   updateGraph = () => {
-    if (this.state.dataNodes.length === 0)
+    if (this.d3.dataNodes.length === 0)
       return;
     const transitionType = easeLinear;
 
     // Apply the general update pattern to the nodes.
     this.d3.node = this.d3.node
-      .data(this.state.dataNodes, function(d) { return d.id;});
+      .data(this.d3.dataNodes, function(d) { return d.id;});
 
     // Exit any old nodes.
     this.d3.node.exit()
@@ -324,7 +325,7 @@ class NetworkView extends Component {
       });
 
     // Apply the general update pattern to the links.
-    this.d3.link = this.d3.link.data(this.state.dataLinks, function(d) { return d.id; });
+    this.d3.link = this.d3.link.data(this.d3.dataLinks, function(d) { return d.id; });
     this.d3.link.exit()
       .transition()
       .duration(200)
@@ -357,9 +358,9 @@ class NetworkView extends Component {
       });
 
     // Update and restart the simulation.
-    this.d3.simulation.nodes(this.state.dataNodes);
-    this.d3.simulation.force("link").links(this.state.dataLinks);
-    this.d3.simulation.alpha(1.2).restart();
+    this.d3.simulation.nodes(this.d3.dataNodes);
+    this.d3.simulation.force("link").links(this.d3.dataLinks);
+    this.d3.simulation.alpha(1.0).restart();
   };
 
   _nodesMap = (e, i) => {
@@ -409,24 +410,23 @@ class NetworkView extends Component {
         });
       });
 
-      this.setState((state) => {
-        const nodeEqual = state.dataNodes.length === dataNodes.length && _.isEqualWith(dataNodes, state.dataNodes, (a, b) => a.id === b.id);
-        const linkEqual = state.dataNodes.length === dataNodes.length && _.differenceWith(state.dataLinks, dataLinks, (a, b) => {
+        const nodeEqual = this.d3.dataNodes.length === dataNodes.length && _.isEqualWith(dataNodes, this.d3.dataNodes, (a, b) => a.id === b.id);
+        const linkEqual = this.d3.dataNodes.length === dataNodes.length && _.differenceWith(this.d3.dataLinks, dataLinks, (a, b) => {
           return a.id === b.id && a.width === b.width && a.targetColor === b.targetColor
         }).length === 0;
-        const res = {};
         if (!nodeEqual) {
-          res.dataNodes = dataNodes;
+          this.d3.dataNodes = dataNodes;
         }
         if (!linkEqual) {
-          res.dataLinks = dataLinks;
+          this.d3.dataLinks = dataLinks;
         }
-        return res;
-      });
+        if(!nodeEqual || !linkEqual) {
+          this.updateGraph();
+        }
     });
   };
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     this.updateGraph();
   }
 
